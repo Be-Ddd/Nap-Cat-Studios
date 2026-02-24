@@ -18,6 +18,7 @@
 
 #include "GameScene.h"
 //#include "SLCollisionController.h"
+#include "AudioController.h"
 
 using namespace cugl;
 using namespace cugl::graphics;
@@ -79,6 +80,10 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _collisions.init(getSize());
     _gameState = GameState::PLAYING;
     
+    // Play background music
+    auto bgm = assets->get<Sound>("bgm");
+    AudioEngine::get()->play("bgm", bgm, true);
+    
     // Acquire the scene built by the asset loader and resize it
     std::shared_ptr<scene2::SceneNode> scene = _assets->get<scene2::SceneNode>("game");
     scene->setContentSize(dimen);
@@ -91,8 +96,6 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _downButton  = std::dynamic_pointer_cast<scene2::Button>(_assets->get<scene2::SceneNode>("game.buttons.down"));
     _leftButton  = std::dynamic_pointer_cast<scene2::Button>(_assets->get<scene2::SceneNode>("game.buttons.left"));
     _rightButton = std::dynamic_pointer_cast<scene2::Button>(_assets->get<scene2::SceneNode>("game.buttons.right"));
-    
-    CULog("HERE buttons");
     
     _upButton->addListener([this](const std::string& name, bool down) {
         if (down) {

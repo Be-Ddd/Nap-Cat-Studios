@@ -48,6 +48,10 @@
             "type": "sample",
             "file": "sounds/bang.ogg",
             "volume": 0.8
+        },
+        "bgm": {
+          "type": "sample",
+          "file": "sounds/bgm.ogg"
         }
     },
     "jsons": {
