@@ -1,0 +1,151 @@
+//
+//  Player.cpp
+//  Demo
+//
+//  This is the implementation for the Player class.
+//
+#include "Player.h"
+
+using namespace cugl;
+using namespace cugl::graphics;
+
+#pragma mark -
+#pragma mark Static Variables
+
+// Initialize static player ID counter
+int Player::_playerID = 0;
+
+#pragma mark -
+#pragma mark Constructors
+
+/**
+ * Creates a player at the given world position.
+ */
+Player::Player(const Vec2& pos) :
+    _pos(pos),
+    _start(pos),
+    _target(pos),
+    _ID(++_playerID),
+    _moving(false),
+    _isCarrying(false),
+    _moveTime(0.0f),
+    _moveDuration(0.2f), // change later
+    _facing(Direction::Down),
+    _texture(nullptr),
+    _node(nullptr)
+{
+}
+
+/**
+ * Disposes all resources allocated to this player.
+ */
+void Player::dispose() {
+    _texture = nullptr;
+    if (_node != nullptr) {
+        _node->dispose();
+        _node = nullptr;
+    }
+}
+
+/**
+ * Initializes the player with a texture.
+ */
+bool Player::init(const Vec2& pos, const std::shared_ptr<Texture>& texture) {
+    _texture = texture;
+    
+    if (_texture == nullptr) {
+        return false;
+    }
+    
+    // Create scene node for rendering
+    _node = scene2::PolygonNode::allocWithTexture(_texture);
+    if (_node == nullptr) {
+        return false;
+    }
+    
+    // Center the node's anchor
+    _node->setAnchor(Vec2::ANCHOR_CENTER);
+    _node->setPosition(_pos);
+    
+    return true;
+}
+
+#pragma mark -
+#pragma mark Position
+
+/**
+ * Hard-sets the position (cancels any ongoing movement).
+ */
+void Player::setPosition(const Vec2& value) {
+    _pos = value;
+    _start = value;
+    _target = value;
+    _moving = false;
+    _moveTime = 0.0f;
+    
+    // Update node position
+    if (_node != nullptr) {
+        _node->setPosition(_pos);
+    }
+}
+
+#pragma mark -
+#pragma mark Movement
+
+/**
+ * Starts a single movement step in the given direction.
+ */
+void Player::startStep(Direction dir, const Vec2& delta) {
+    if (_moving) {
+        return;
+    }
+    
+    // Update facing direction
+    _facing = dir;
+    
+    // Set up movement interpolation
+    _start = _pos;
+    _target = _pos + delta;
+    _moving = true;
+    _moveTime = 0.0f;
+}
+
+/**
+ * Updates smooth movement animation.
+ */
+void Player::update(float dt) {
+    if (!_moving) {
+        return;
+    }
+    
+    _moveTime += dt;
+    
+    float t = _moveTime / _moveDuration;
+    
+    if (t >= 1.0f) {
+        _pos = _target;
+        _moving = false;
+        _moveTime = 0.0f;
+    } else {
+        // linear movement
+        _pos = _start + (_target - _start) * t;
+        
+        //smooth later
+    }
+    
+    if (_node != nullptr) {
+        _node->setPosition(_pos);
+    }
+}
+
+#pragma mark -
+#pragma mark Rendering
+
+/**
+ * Draws this player to the sprite batch.
+ */
+void Player::draw(const std::shared_ptr<graphics::SpriteBatch>& batch) {
+    if (_texture != nullptr && batch != nullptr) {
+        batch->draw(_texture, _pos);
+    }
+}
