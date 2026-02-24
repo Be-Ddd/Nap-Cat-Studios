@@ -1,7 +1,7 @@
 {
     "textures": {
         "background": {
-            "file": "textures/ice.png",
+            "file": "textures/map.png",
             "wrapS": "repeat",
             "wrapT": "repeat"
         },
@@ -19,6 +19,9 @@
         },
         "valuable1": {
             "file": "textures/pearl.png"
+        },
+        "player": {
+            "file": "textures/player.png"
         }
     },
     "fonts": {

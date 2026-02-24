@@ -32,7 +32,9 @@ Player::Player(const Vec2& pos) :
     _moveDuration(0.2f), // change later
     _facing(Direction::Down),
     _texture(nullptr),
-    _node(nullptr)
+    _node(nullptr),
+    _scale(0.15f),
+    _radius(0.0f)
 {
 }
 
@@ -86,6 +88,17 @@ void Player::setPosition(const Vec2& value) {
     // Update node position
     if (_node != nullptr) {
         _node->setPosition(_pos);
+    }
+}
+
+void Player::setTexture(const std::shared_ptr<cugl::graphics::Texture>& texture){
+    if (texture) {
+        Size size = texture->getSize();
+        _radius = std::max(size.width, size.height) / 2;
+        _texture = texture;
+    }else{
+        _radius = 0.0f;
+        _texture =nullptr;
     }
 }
 
@@ -146,6 +159,14 @@ void Player::update(float dt) {
  */
 void Player::draw(const std::shared_ptr<graphics::SpriteBatch>& batch) {
     if (_texture != nullptr && batch != nullptr) {
-        batch->draw(_texture, _pos);
+        float scale = getScale();
+        Vec2 pos = getPosition();
+        Vec2 origin(_radius,_radius);
+        
+        Affine2 trans;
+        trans.scale(scale);
+        trans.translate(pos);
+
+        batch->draw(_texture, _pos, trans);
     }
 }
