@@ -151,6 +151,40 @@ void Player::update(float dt) {
     }
 }
 
+void Player::move(Direction dir, float gridSize, int nRow, int nCol){
+    cugl::Vec2 step = Vec2(0,0);
+    switch (dir) {
+        case Direction::Up:{
+            step= cugl::Vec2(0,1);
+            break;
+        }
+        case Direction::Down:{
+            step= cugl::Vec2(0,-1);
+            break;
+        }
+        case Direction::Left:{
+            step= cugl::Vec2(-1,0);
+            break;
+        }
+        case Direction::Right:{
+            step = cugl::Vec2(1,0);
+            break;
+        }
+        default:
+            break;
+    }
+    float rightEdge = nCol*gridSize;
+    float topEdge = nRow*gridSize;
+    cugl::Vec2 next = _pos+step*gridSize;
+
+    if (next.x < 0 || next.x >= rightEdge ||
+            next.y < 0 || next.y >= topEdge) {
+            return;   // block movement
+        }
+    _pos = next;
+    
+}
+
 #pragma mark -
 #pragma mark Rendering
 

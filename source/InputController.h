@@ -15,6 +15,7 @@
 //
 #ifndef __INPUT_CONTROLLER_H__
 #define __INPUT_CONTROLLER_H__
+#include "Direction.h"
 
 /**
  * Device-independent input manager.
@@ -25,50 +26,24 @@
  */
 class InputController {
 private:
-    /** How much forward are we going? */
-    float _forward;
     
-    /** How much are we turning? */
-    float _turning;
+    Direction _dir;
     
-    /** Did we press the fire button? */
-    bool _didFire;
+    bool _didPress;
+    
 
     /** Did we press the reset button? */
     bool _didReset;
 
 public:
-    /**
-     * Returns the amount of forward movement.
-     *
-     * -1 = backward, 1 = forward, 0 = still
-     *
-     * @return amount of forward movement.
-     */
-    float getForward() const {
-        return _forward;
-    }
-
-    /**
-     * Returns the amount to turn the ship.
-     *
-     * -1 = clockwise, 1 = counter-clockwise, 0 = still
-     *
-     * @return amount to turn the ship.
-     */
-    float getTurn() const {
-        return _turning;
-    }
-
-    /**
-     * Returns whether the fire button was pressed.
-     *
-     * @return whether the fire button was pressed.
-     */
-    bool didPressFire() const {
-        return _didFire;
-    }
     
+    
+    Direction getDirection() const{
+        return _dir;
+    }
+    bool didPress() const{
+        return _didPress;
+    }
     /**
      * Returns whether the reset button was pressed.
      *

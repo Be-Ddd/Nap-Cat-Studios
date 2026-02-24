@@ -31,6 +31,11 @@ using namespace std;
 #define SCENE_HEIGHT 720
 
 #pragma mark -
+#pragma mark Helper
+
+ 
+
+#pragma mark -
 #pragma mark Constructors
 /**
  * Initializes the controller contents, and starts the game
@@ -77,6 +82,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     return true;
 }
 
+
 /**
  * Disposes of all (non-static) resources allocated to this mode.
  */
@@ -114,6 +120,9 @@ void GameScene::update(float dt) {
     }
     if (_gameState==GameState::PLAYING){
         // the update loop
+        if (_input.getDirection()!= Direction::None){
+            _player->move(_input.getDirection(),_gridSize,_nRow,_nCol);
+            }
         }
 }
 

@@ -7,9 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB1ECF72041B5B548912DAFD /* json in Resources */ = {isa = PBXBuildFile; fileRef = AAA65345A24E57179F4BB2EB /* json */; };
+		AB51D264B14C5CF5A54C34AE /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = AA6281555ACE5DC983CD17DE /* sounds */; };
+		ABA1B5035A0551B989009EBC /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = AA498C90E97456928DBCE579 /* fonts */; };
+		ABF9657C72E255AE843B7659 /* textures in Resources */ = {isa = PBXBuildFile; fileRef = AA29F770BBE7550BB7E91663 /* textures */; };
+		BB0438102B5959B8ACA6B953 /* ObjectModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA11A3CE45CD5572964D49CE /* ObjectModel.cpp */; };
+		BB1475EF30A65DBD95662B6C /* InputController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BADBF6178A035EC0AE58C473 /* InputController.cpp */; };
+		BB5DE9457CA154F1B3BE722C /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAE3571028B0532E8AC69A82 /* App.cpp */; };
+		BB8455AA861850CE83448E2E /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BADBC0356A83568E83408908 /* GameScene.cpp */; };
+		BB90DA88AA9D5D26A6A9B49D /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA9252D509575F9F94221DC2 /* Player.cpp */; };
+		BBAEC23E513A59C4B0625329 /* CollisionController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA6E76D41FE1576DBA5CC0D4 /* CollisionController.cpp */; };
+		BBCAC2EB218A585EBCC9E55C /* ValuableSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA50B54F6D9B55F69C906493 /* ValuableSet.cpp */; };
 		EB0F3CB827FB9FD40037CC66 /* Mac.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB0F3CB327FB9FD40037CC66 /* Mac.xcassets */; platformFilters = (macos, ); };
-		EB19F8A72EF5B588003D11B2 /* libcugl-physics2-lights.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB19F8A22EF5B549003D11B2 /* libcugl-physics2-lights.a */; };
-		EB19F8A82EF5B593003D11B2 /* libcugl-backend-headless.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB19F8A42EF5B549003D11B2 /* libcugl-backend-headless.a */; platformFilters = (macos, ); };
 		EB19F8A92EF5B593003D11B2 /* libcugl-backend-opengl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB19F8A62EF5B549003D11B2 /* libcugl-backend-opengl.a */; platformFilters = (ios, macos, tvos, xros, ); };
 		EB19F8C02EF5B5E0003D11B2 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB19F8BF2EF5B5E0003D11B2 /* ApplicationServices.framework */; platformFilters = (maccatalyst, macos, ); };
 		EB19F93B2EF5D1F6003D11B2 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB19F9222EF5D1F5003D11B2 /* CoreFoundation.framework */; };
@@ -43,23 +52,8 @@
 		EB6E0E61298C1A3E00704E87 /* licenses in Resources */ = {isa = PBXBuildFile; fileRef = EB6E0E5D298C1A3300704E87 /* licenses */; };
 		EBAD58462C3CAC2700B77A34 /* libcugl-audio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAD58392C3CAC1700B77A34 /* libcugl-audio.a */; };
 		EBAD58472C3CAC2700B77A34 /* libcugl-core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAD58332C3CAC1700B77A34 /* libcugl-core.a */; };
-		EBAD58482C3CAC2700B77A34 /* libcugl-physics2-distrib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAD58452C3CAC1700B77A34 /* libcugl-physics2-distrib.a */; };
 		EBAD58492C3CAC2700B77A34 /* libcugl-graphics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAD58372C3CAC1700B77A34 /* libcugl-graphics.a */; };
-		EBAD584A2C3CAC2700B77A34 /* libcugl-netcode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAD58412C3CAC1700B77A34 /* libcugl-netcode.a */; };
-		EBAD584B2C3CAC2700B77A34 /* libcugl-physics2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAD583F2C3CAC1700B77A34 /* libcugl-physics2.a */; };
 		EBAD584C2C3CAC2700B77A34 /* libcugl-scene2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAD583B2C3CAC1700B77A34 /* libcugl-scene2.a */; };
-		EBAD584D2C3CAC2700B77A34 /* libcugl-scene3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAD583D2C3CAC1700B77A34 /* libcugl-scene3.a */; };
-		ABF9657C72E255AE843B7659 /* textures in Resources */ = {isa = PBXBuildFile; fileRef = AA29F770BBE7550BB7E91663 /* textures */; };
-		AB51D264B14C5CF5A54C34AE /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = AA6281555ACE5DC983CD17DE /* sounds */; };
-		AB1ECF72041B5B548912DAFD /* json in Resources */ = {isa = PBXBuildFile; fileRef = AAA65345A24E57179F4BB2EB /* json */; };
-		ABA1B5035A0551B989009EBC /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = AA498C90E97456928DBCE579 /* fonts */; };
-		BB1475EF30A65DBD95662B6C /* InputController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BADBF6178A035EC0AE58C473 /* InputController.cpp */; };
-		BBAEC23E513A59C4B0625329 /* CollisionController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA6E76D41FE1576DBA5CC0D4 /* CollisionController.cpp */; };
-		BB90DA88AA9D5D26A6A9B49D /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA9252D509575F9F94221DC2 /* Player.cpp */; };
-		BB0438102B5959B8ACA6B953 /* ObjectModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA11A3CE45CD5572964D49CE /* ObjectModel.cpp */; };
-		BBCAC2EB218A585EBCC9E55C /* ValuableSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA50B54F6D9B55F69C906493 /* ValuableSet.cpp */; };
-		BB8455AA861850CE83448E2E /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BADBC0356A83568E83408908 /* GameScene.cpp */; };
-		BB5DE9457CA154F1B3BE722C /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAE3571028B0532E8AC69A82 /* App.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,6 +137,25 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AA29F770BBE7550BB7E91663 /* textures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = textures; sourceTree = "<group>"; };
+		AA498C90E97456928DBCE579 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
+		AA6281555ACE5DC983CD17DE /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
+		AAA65345A24E57179F4BB2EB /* json */ = {isa = PBXFileReference; lastKnownFileType = folder; path = json; sourceTree = "<group>"; };
+		BA101286A96C5E8C82F57D6A /* ObjectModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectModel.h; sourceTree = "<group>"; };
+		BA11A3CE45CD5572964D49CE /* ObjectModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectModel.cpp; sourceTree = "<group>"; };
+		BA1AF9179A155A3D86C75C40 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		BA50B54F6D9B55F69C906493 /* ValuableSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ValuableSet.cpp; sourceTree = "<group>"; };
+		BA6E76D41FE1576DBA5CC0D4 /* CollisionController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionController.cpp; sourceTree = "<group>"; };
+		BA7A9594C200519ABABEEF2E /* InputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputController.h; sourceTree = "<group>"; };
+		BA9252D509575F9F94221DC2 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
+		BA9B0994632B5F96AEE6B943 /* App.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = App.h; sourceTree = "<group>"; };
+		BABC1BFF05E55CADB0E9E620 /* CollisionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollisionController.h; sourceTree = "<group>"; };
+		BACF922D98DB5C02A89FD482 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
+		BADBC0356A83568E83408908 /* GameScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameScene.cpp; sourceTree = "<group>"; };
+		BADBF6178A035EC0AE58C473 /* InputController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputController.cpp; sourceTree = "<group>"; };
+		BAE3571028B0532E8AC69A82 /* App.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = App.cpp; sourceTree = "<group>"; };
+		BAFD71A80C68539BB1632254 /* ValuableSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValuableSet.h; sourceTree = "<group>"; };
+		CE801CF02F4E300A007BACFB /* Direction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Direction.h; sourceTree = "<group>"; };
 		EB0F3C9627FB9DCB0037CC66 /* Ship Lab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ship Lab.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB0F3CB027FB9FD40037CC66 /* Landscape.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Landscape.storyboard; sourceTree = "<group>"; };
 		EB0F3CB127FB9FD40037CC66 /* iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = iOS.xcassets; sourceTree = "<group>"; };
@@ -176,25 +189,7 @@
 		EB19F9382EF5D1F6003D11B2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		EB19F9392EF5D1F6003D11B2 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		EB19F93A2EF5D1F6003D11B2 /* CoreHaptics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreHaptics.framework; path = System/Library/Frameworks/CoreHaptics.framework; sourceTree = SDKROOT; };
-		EB6E0E5D298C1A3300704E87 /* licenses */ = {isa = PBXFileReference; lastKnownFileType = folder; name = licenses; path = "../../../../cugl/licenses"; sourceTree = "<group>"; };
-		AA29F770BBE7550BB7E91663 /* textures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = textures; sourceTree = "<group>"; };
-		AA6281555ACE5DC983CD17DE /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
-		AAA65345A24E57179F4BB2EB /* json */ = {isa = PBXFileReference; lastKnownFileType = folder; path = json; sourceTree = "<group>"; };
-		AA498C90E97456928DBCE579 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
-		BADBF6178A035EC0AE58C473 /* InputController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; path = InputController.cpp; sourceTree = "<group>"; };
-		BA6E76D41FE1576DBA5CC0D4 /* CollisionController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; path = CollisionController.cpp; sourceTree = "<group>"; };
-		BA9252D509575F9F94221DC2 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; path = Player.cpp; sourceTree = "<group>"; };
-		BA11A3CE45CD5572964D49CE /* ObjectModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; path = ObjectModel.cpp; sourceTree = "<group>"; };
-		BA50B54F6D9B55F69C906493 /* ValuableSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; path = ValuableSet.cpp; sourceTree = "<group>"; };
-		BADBC0356A83568E83408908 /* GameScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; path = GameScene.cpp; sourceTree = "<group>"; };
-		BAE3571028B0532E8AC69A82 /* App.cpp */ = {isa = PBXFileReference; fileEncoding = 4; path = App.cpp; sourceTree = "<group>"; };
-		BABC1BFF05E55CADB0E9E620 /* CollisionController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = CollisionController.h; sourceTree = "<group>"; };
-		BACF922D98DB5C02A89FD482 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; path = GameScene.h; sourceTree = "<group>"; };
-		BA7A9594C200519ABABEEF2E /* InputController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = InputController.h; sourceTree = "<group>"; };
-		BA1AF9179A155A3D86C75C40 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; path = Player.h; sourceTree = "<group>"; };
-		BA9B0994632B5F96AEE6B943 /* App.h */ = {isa = PBXFileReference; fileEncoding = 4; path = App.h; sourceTree = "<group>"; };
-		BAFD71A80C68539BB1632254 /* ValuableSet.h */ = {isa = PBXFileReference; fileEncoding = 4; path = ValuableSet.h; sourceTree = "<group>"; };
-		BA101286A96C5E8C82F57D6A /* ObjectModel.h */ = {isa = PBXFileReference; fileEncoding = 4; path = ObjectModel.h; sourceTree = "<group>"; };
+		EB6E0E5D298C1A3300704E87 /* licenses */ = {isa = PBXFileReference; lastKnownFileType = folder; name = licenses; path = ../../../../cugl/licenses; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -272,13 +267,14 @@
 				BABC1BFF05E55CADB0E9E620 /* CollisionController.h */,
 				BACF922D98DB5C02A89FD482 /* GameScene.h */,
 				BA7A9594C200519ABABEEF2E /* InputController.h */,
+				CE801CF02F4E300A007BACFB /* Direction.h */,
 				BA1AF9179A155A3D86C75C40 /* Player.h */,
 				BA9B0994632B5F96AEE6B943 /* App.h */,
 				BAFD71A80C68539BB1632254 /* ValuableSet.h */,
 				BA101286A96C5E8C82F57D6A /* ObjectModel.h */,
 			);
 			name = Source;
-			path = "../../source";
+			path = ../../source;
 			sourceTree = "<group>";
 		};
 		EB0F3CAE27FB9F700037CC66 /* Resources */ = {
@@ -354,7 +350,7 @@
 				AA498C90E97456928DBCE579 /* fonts */,
 			);
 			name = Assets;
-			path = "../../assets";
+			path = ../../assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -372,7 +368,7 @@
 			);
 			dependencies = (
 			);
-			name = "ship";
+			name = ship;
 			productName = cuglapp;
 			productReference = EB0F3C9627FB9DCB0037CC66 /* Ship Lab.app */;
 			productType = "com.apple.product-type.application";
@@ -391,7 +387,7 @@
 					};
 				};
 			};
-			buildConfigurationList = EB0F3C9127FB9DCB0037CC66 /* Build configuration list for PBXProject "app" */;
+			buildConfigurationList = EB0F3C9127FB9DCB0037CC66 /* Build configuration list for PBXProject "Ship" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -718,13 +714,12 @@
 				INFOPLIST_KEY_UIStatusBarHidden = NO;
 				"INFOPLIST_KEY_UIStatusBarHidden[sdk=iphone*]" = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.cornell.gdiac.code1.GFC31DEC";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.code1.GFC31DEC;
 				PRODUCT_NAME = "Ship Lab";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = "";
@@ -782,7 +777,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.cornell.gdiac.code1.GFC31DEC";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.cornell.gdiac.code1.GFC31DEC;
 				PRODUCT_NAME = "Ship Lab";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = "";
@@ -796,7 +791,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EB0F3C9127FB9DCB0037CC66 /* Build configuration list for PBXProject "app" */ = {
+		EB0F3C9127FB9DCB0037CC66 /* Build configuration list for PBXProject "Ship" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EB0F3CA727FB9DCC0037CC66 /* Debug */,
@@ -815,7 +810,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
 	};
 	rootObject = EB0F3C8E27FB9DCB0037CC66 /* Project object */;
 }
