@@ -64,6 +64,8 @@ private:
     float _scale;
     
     float _radius;
+    float _width;
+    float _height;
     
     
     /** The texture for rendering this player */

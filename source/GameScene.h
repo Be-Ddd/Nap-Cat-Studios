@@ -40,10 +40,10 @@ protected:
     int _nCol = 9;
     int _rowNum;
     int _colNum;
-    float _leftOffeset = 0.0f;
+    float _leftOffeset = 30.0f;
     float _topOffeset = 120.0f;
     float _rightOffeset = 350.0f;
-    float _gridSize = 115.0f;
+    float _gridSize = 100.0f;
     
     
     // CONTROLLERS are attached directly to the scene (no pointers)

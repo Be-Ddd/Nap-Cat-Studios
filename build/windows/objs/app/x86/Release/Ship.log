@@ -1,12 +1,16 @@
-﻿  GameScene.cpp
+﻿  CollisionController.cpp
 C:\Users\Public\Dev\Nap-Cat-Studios\source\Player.h(1,1): warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
-  (compiling source file '../../../source/GameScene.cpp')
+  (compiling source file '../../../source/CollisionController.cpp')
+  
+  Player.cpp
+C:\Users\Public\Dev\Nap-Cat-Studios\source\Player.h(1,1): warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+  (compiling source file '../../../source/Player.cpp')
   
      Creating library C:\Users\Public\Dev\Nap-Cat-Studios\build\windows\x86\Release\Ship.lib and object C:\Users\Public\Dev\Nap-Cat-Studios\build\windows\x86\Release\Ship.exp
   Generating code
-  178 of 16807 functions ( 1.1%) were compiled, the rest were copied from previous compilation.
-    10 functions were new in current compilation
-    100 functions had inline decision re-evaluated but remain unchanged
+  9 of 16811 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    38 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
 cugl-main.lib(guids.obj) : warning LNK4255: library contain multiple objects of the same name; linking object as if no debug info
   Ship.vcxproj -> C:\Users\Public\Dev\Nap-Cat-Studios\build\windows\x86\Release\Ship.exe

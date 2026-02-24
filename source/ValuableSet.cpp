@@ -151,7 +151,7 @@ void ValuableSet::spawnValuable(Vec2 p, int t) {
 void ValuableSet::update(Size size, std::vector<cugl::Vec2> pos) {
     // Move asteroids, updating the animation frame
     for (auto it = current.begin(); it != current.end(); ++it) {
-        if ((*it)->getCarrier() != -1) {
+        if ((*it)->getCarrier() != -1 && (*it)->position != pos[(*it)->getCarrier()]) {
             (*it)->update(size, pos[(*it)->getCarrier()]);
         }
         (*it)->update(size, (*it)->position);

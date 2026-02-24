@@ -13,7 +13,7 @@ using namespace cugl::graphics;
 #pragma mark Static Variables
 
 // Initialize static player ID counter
-int Player::_playerID = 0;
+int Player::_playerID = -1;
 
 #pragma mark -
 #pragma mark Constructors
@@ -95,6 +95,8 @@ void Player::setTexture(const std::shared_ptr<cugl::graphics::Texture>& texture)
     if (texture) {
         Size size = texture->getSize();
         _radius = std::max(size.width, size.height) / 2;
+        _width = size.width / 2.0f;
+        _height = size.height / 2.0f;
         _texture = texture;
     }else{
         _radius = 0.0f;
@@ -195,12 +197,13 @@ void Player::draw(const std::shared_ptr<graphics::SpriteBatch>& batch) {
     if (_texture != nullptr && batch != nullptr) {
         float scale = getScale();
         Vec2 pos = getPosition();
-        Vec2 origin(_radius,_radius);
+        // Vec2 origin(_radius,_radius);
+        Vec2 origin(_width, _height);
         
         Affine2 trans;
         trans.scale(scale);
         trans.translate(pos);
 
-        batch->draw(_texture, _pos, trans);
+        batch->draw(_texture, origin, trans);
     }
 }

@@ -38,7 +38,7 @@ bool CollisionController::resolveCollisions(const std::shared_ptr<Player>& playe
         int x_val = static_cast<int>(((*it)->position.x - 30.0f) / 100.0f);
         int y_val = static_cast<int>(((*it)->position.y) / 100.0f);
         // Pick up automatically when in the same grid, should add stealing process later
-        if (x_player == x_val && y_player == y_val) {
+        if (x_player == x_val && y_player == y_val && !player->isCarrying()) {
             (*it)->setState(ValuableSet::Valuable::CARRIED, player->getPlayerID());
             player->setCarrying(true);
             collision = true;
