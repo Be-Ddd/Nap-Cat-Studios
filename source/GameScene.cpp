@@ -53,6 +53,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Start up the input handler
     _assets = assets;
+    Size dimen = getSize();
     
     // Get the background image and constant values
     _background = assets->get<Texture>("background");
@@ -72,6 +73,42 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _collisions.init(getSize());
     _gameState = GameState::PLAYING;
+    
+    // Acquire the scene built by the asset loader and resize it
+    std::shared_ptr<scene2::SceneNode> scene = _assets->get<scene2::SceneNode>("game");
+    scene->setContentSize(dimen);
+    scene->doLayout();
+
+    addChild(scene);
+
+    // Initialize buttons from the loaded scene
+    _upButton    = std::dynamic_pointer_cast<scene2::Button>(_assets->get<scene2::SceneNode>("game.buttons.up"));
+    _downButton  = std::dynamic_pointer_cast<scene2::Button>(_assets->get<scene2::SceneNode>("game.buttons.down"));
+    _leftButton  = std::dynamic_pointer_cast<scene2::Button>(_assets->get<scene2::SceneNode>("game.buttons.left"));
+    _rightButton = std::dynamic_pointer_cast<scene2::Button>(_assets->get<scene2::SceneNode>("game.buttons.right"));
+    
+    CULog("HERE buttons");
+    
+    _upButton->addListener([this](const std::string& name, bool down) {
+        if (down) {
+            
+        }
+    });
+    
+    _downButton->addListener([this](const std::string& name, bool down) {
+        if (down) {
+        }
+    });
+    
+    _leftButton->addListener([this](const std::string& name, bool down) {
+        if (down) {
+        }
+    });
+    
+    _rightButton->addListener([this](const std::string& name, bool down) {
+        if (down) {
+        }
+    });
     
     reset();
     return true;

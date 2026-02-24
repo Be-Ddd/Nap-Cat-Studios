@@ -71,6 +71,15 @@ protected:
     std::shared_ptr<cugl::audio::Sound> _blast;
     
     std::shared_ptr<Player> _player;
+    
+    std::shared_ptr<cugl::scene2::Button> _upButton;
+    
+    std::shared_ptr<cugl::scene2::Button> _downButton;
+    
+    std::shared_ptr<cugl::scene2::Button> _leftButton;
+    
+    std::shared_ptr<cugl::scene2::Button> _rightButton;
+    
 public:
 #pragma mark -
 #pragma mark Constructors
