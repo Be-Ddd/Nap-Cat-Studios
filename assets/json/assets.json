@@ -42,11 +42,6 @@
             "type": "sample",
             "file": "sounds/bang.ogg",
             "volume": 0.8
-        },
-        "bgm" : {
-            "type": "stream",
-            "file": "sounds/4Tracks.wav",
-            "volume": 0.8
         }
     },
     "jsons" : {
