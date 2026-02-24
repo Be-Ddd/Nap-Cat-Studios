@@ -67,6 +67,10 @@ private:
     /** Current facing direction */
     Direction _facing;
     
+    float _scale;
+    
+    float _radius;
+    
     /** The texture for rendering this player */
     std::shared_ptr<cugl::graphics::Texture> _texture;
     
@@ -236,7 +240,34 @@ public:
      * @param batch The sprite batch for drawing
      */
     void draw(const std::shared_ptr<cugl::graphics::SpriteBatch>& batch);
+    
+#pragma mark Graphics
+    /**
+     * Returns the sprite sheet for the ship
+     *
+     * The size and layout of the sprite sheet should already be specified in
+     * the initializing JSON. Otherwise, the contents of the sprite sheet will
+     * be ignored.
+     *
+     * @return the sprite sheet for the ship
+     */
+    const std::shared_ptr<cugl::graphics::Texture>& getTexture() const {
+        return _texture;
+    }
+    /**
+     * Sets the texture for this ship.
+     *
+     * The texture should be formated as a sprite sheet, and the size and
+     * layout of the sprite sheet should already be specified in the
+     * initializing JSON. If so, this method will construct a sprite sheet
+     * from this texture. Otherwise, the texture will be ignored.
+     *
+     * @param texture   The texture for the sprite sheet
+     */
+    void setTexture(const std::shared_ptr<cugl::graphics::Texture>& texture);
+    float getScale(){ return _scale;}
 };
+
 
 #endif /* __PLAYER_H__ */
 

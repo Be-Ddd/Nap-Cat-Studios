@@ -20,6 +20,7 @@
 #include "InputController.h"
 #include "CollisionController.h"
 #include "ValuableSet.h"
+#include "Player.h"
 
 
 
@@ -68,6 +69,8 @@ protected:
     std::shared_ptr<cugl::audio::Sound> _laser;
 
     std::shared_ptr<cugl::audio::Sound> _blast;
+    
+    std::shared_ptr<Player> _player;
 public:
 #pragma mark -
 #pragma mark Constructors
