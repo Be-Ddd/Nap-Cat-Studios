@@ -241,12 +241,11 @@ void GameScene::update(float dt) {
         }
     }
 
-//    if (_step >=_interval){
-//        //BANG!!!
-//        //(plays Bang on beat)
-//        _step =0.0f;
-//        AudioEngine::get()->play("bang", _bang, false, _bang->getVolume(), true);
-//    }
+    if (_step >=_interval){
+        //BANG!!!
+        //(plays Bang on beat)
+        _step =0.0f;
+    }
 }
 
 /**
