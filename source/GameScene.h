@@ -44,6 +44,8 @@ protected:
     float _topOffeset = 120.0f;
     float _rightOffeset = 350.0f;
     float _gridSize = 100.0f;
+    float _interval;
+    float _step;
     
     
     // CONTROLLERS are attached directly to the scene (no pointers)
@@ -52,11 +54,14 @@ protected:
     /** The controller for managing collisions */
     CollisionController _collisions;
     
+    
     // MODELS should be shared pointers or a data structure of shared pointers
     /** The JSON value with all of the constants */
     std::shared_ptr<cugl::JsonValue> _constants;
     /** The location of all of the active valuables */
     ValuableSet _valuables;
+    /** mini game scene*/
+    /*std::shared_ptr<cugl::scene2::SceneNode> _minigame;*/
     
     /** The location of all of the active asteroids */
     enum class GameState {
@@ -71,6 +76,8 @@ protected:
     // In the future, we will replace this with the scene graph
     /** The backgrounnd image */
     std::shared_ptr<cugl::graphics::Texture> _background;
+    /** The mini game backgrounnd image */
+    std::shared_ptr<cugl::graphics::Texture> _miniBackground;
     /** The text with the current health */
     std::shared_ptr<cugl::graphics::TextLayout> _text;
     /** The sound of a ship-asteroid collision */
@@ -81,6 +88,23 @@ protected:
     std::shared_ptr<cugl::audio::Sound> _blast;
     
     std::shared_ptr<Player> _player;
+    
+    std::shared_ptr<cugl::scene2::Button> _upButton;
+    
+    std::shared_ptr<cugl::scene2::Button> _downButton;
+    
+    std::shared_ptr<cugl::scene2::Button> _leftButton;
+    
+    std::shared_ptr<cugl::scene2::Button> _rightButton;
+    
+
+    /* this method of adding in mini game layer is TEMP */
+    /* The mini-game overlay node loaded from miniGame.json */
+    std::shared_ptr<cugl::scene2::SceneNode> _overlay;
+    /* Whether the overlay is currently showing */
+    bool _showOverlay;
+    /* Current progress through the unlock sequence (Up, Left, Right, Down) */
+    int _inputStep;
 public:
 #pragma mark -
 #pragma mark Constructors

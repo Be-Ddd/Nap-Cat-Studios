@@ -48,7 +48,8 @@ bool CollisionController::resolveCollisions(const std::shared_ptr<Player>& playe
     return collision;
 }
 
-void CollisionController::hackyAttemptToPickUP(const std::shared_ptr<Player>& player, ValuableSet& vset) {
+bool CollisionController::hackyAttemptToPickUP(const std::shared_ptr<Player>& player, ValuableSet& vset) {
+    bool collision = false;
     for (size_t i = 0; i < vset.current.size(); ++i) {
         std::shared_ptr<ValuableSet::Valuable> val = vset.current[i];
         // Calculate the normal of the (possible) point of collision
@@ -63,6 +64,8 @@ void CollisionController::hackyAttemptToPickUP(const std::shared_ptr<Player>& pl
             CULog("picking up");
             val->setState(ValuableSet::Valuable::CARRIED, player->getPlayerID());
             player->setCarrying(true, i);
+            collision = true;
         }
     }
+    return collision;
 }
