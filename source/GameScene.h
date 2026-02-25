@@ -57,6 +57,8 @@ protected:
     std::shared_ptr<cugl::JsonValue> _constants;
     /** The location of all of the active valuables */
     ValuableSet _valuables;
+    /** mini game scene*/
+    /*std::shared_ptr<cugl::scene2::SceneNode> _minigame;*/
     
     /** The location of all of the active asteroids */
     enum class GameState {
@@ -71,6 +73,8 @@ protected:
     // In the future, we will replace this with the scene graph
     /** The backgrounnd image */
     std::shared_ptr<cugl::graphics::Texture> _background;
+    /** The mini game backgrounnd image */
+    std::shared_ptr<cugl::graphics::Texture> _miniBackground;
     /** The text with the current health */
     std::shared_ptr<cugl::graphics::TextLayout> _text;
     /** The sound of a ship-asteroid collision */
@@ -81,6 +85,14 @@ protected:
     std::shared_ptr<cugl::audio::Sound> _blast;
     
     std::shared_ptr<Player> _player;
+
+    /* this method of adding in mini game layer is TEMP */
+    /* The mini-game overlay node loaded from miniGame.json */
+    std::shared_ptr<cugl::scene2::SceneNode> _overlay;
+    /* Whether the overlay is currently showing */
+    bool _showOverlay;
+    /* Current progress through the unlock sequence (Up, Left, Right, Down) */
+    int _inputStep;
 public:
 #pragma mark -
 #pragma mark Constructors

@@ -58,9 +58,15 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Start up the input handler
     _assets = assets;
+
+    // Acquire the scene built by the asset loader and resize it the scene
+    /*_minigame = _assets->get<scene2::SceneNode>("miniGame");
+    _minigame->setContentSize(getSize());
+    _minigame->doLayout();*/
     
     // Get the background image and constant values
     _background = assets->get<Texture>("background");
+    _miniBackground = assets->get<Texture>("miniGame_background 1");
     _constants = assets->get<JsonValue>("constants");
 
     // Initialize valuables
@@ -77,7 +83,25 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _collisions.init(getSize());
     _gameState = GameState::PLAYING;
+
+    /* loading in the mini game scene -- START */
+
+    _showOverlay = false;
+    _inputStep = 0;
+    _overlay = _assets->get<scene2::SceneNode>("miniGame");
+    if (_overlay == nullptr) {
+        std::cout << "[DEBUG] _overlay is NULL - scene2s not loaded" << endl;
+    }
+    else {
+        std::cout << "[DEBUG] _overlay created OK" << endl;
+        _overlay->setVisible(false);
+        _overlay->setPosition(getSize().width / 2.0f, getSize().height / 2.0f);
+        addChild(_overlay);
+    }
+
+    /* ~~~~~~~~~~~ MINI GAME SCENE END ~~~~~~ */
     
+    /*addChild(_minigame);*/
     reset();
     return true;
 }
@@ -118,19 +142,54 @@ void GameScene::update(float dt) {
     if (_input.didPressReset()) {
         reset();
     }
-    std::cout << "Enter update" << endl;
-    if (_gameState==GameState::PLAYING){
-        // the update loop
-        if (_input.getDirection()!= Direction::None){
-            _player->move(_input.getDirection(),_gridSize,_nRow,_nCol);
-        }
-        std::vector<cugl::Vec2> player_pos;
-        player_pos.push_back(_player->getPosition());
-        _valuables.update(getSize(), player_pos);
+    // std::cout << "Enter update" << endl;
 
-        if (_collisions.resolveCollisions(_player, _valuables)) {
-            std::cout<<"Collision between player and valuable"<<endl;
+    // Toggle mini-game overlay with M key
+    cugl::Keyboard* keys = cugl::Input::get<cugl::Keyboard>();
+    if (keys->keyPressed(cugl::KeyCode::M)) {
+        _showOverlay = !_showOverlay;
+        _inputStep = 0;
+        if (_overlay) _overlay->setVisible(_showOverlay);
+    }
+
+
+    if (_gameState == GameState::PLAYING) {
+        if (_showOverlay) {
+            // Must enter Up, Left, Right, Down in order to dismiss
+            static const Direction sequence[] = {
+                Direction::Up, Direction::Left, Direction::Right, Direction::Down
+            };
+            Direction dir = _input.getDirection();
+            if (dir != Direction::None) {
+                if (dir == sequence[_inputStep]) {
+                    _inputStep++;
+                    if (_inputStep == 4) {
+                        // Full sequence entered ¡ª dismiss overlay
+                        _showOverlay = false;
+                        _inputStep = 0;
+                        if (_overlay) _overlay->setVisible(false);
+                    }
+                }
+                else {
+                    // Wrong input ¡ª reset sequence
+                    _inputStep = 0;
+                }
+            }
         }
+        else {
+            // the update loop
+            if (_input.getDirection() != Direction::None) {
+                _player->move(_input.getDirection(), _gridSize, _nRow, _nCol);
+            }
+            std::vector<cugl::Vec2> player_pos;
+            player_pos.push_back(_player->getPosition());
+            _valuables.update(getSize(), player_pos);
+
+            if (_collisions.resolveCollisions(_player, _valuables)) {
+                std::cout << "Collision between player and valuable" << endl;
+            }
+        }
+
     }
 }
 
@@ -152,7 +211,14 @@ void GameScene::render() {
     _valuables.draw(_batch, getSize());
     _player->draw(_batch);
     _batch->setColor(Color4::BLACK);
+
+    /*if (_isMiniGameActive) {
+        _batch->draw(_miniBackground, Rect(Vec2(300.0f, 300.0f), Size(328.0f, 263.0f)));
+    }*/
      
     _batch->end();
+
+    // Draw scene graph children (overlay) on top via the proper Scene2 pipeline
+    Scene2::render();
 }
 
