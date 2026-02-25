@@ -55,8 +55,9 @@ void initHitLog() {
         cugl::Application::get()->getSaveDirectory() + "hitlog.csv";
 
     // If file already exists, do nothing
-    if (std::filesystem::exists(path)) {
-        return;
+    std::ifstream check(path);
+    if (check.good()) {
+        return;  // file already exists
     }
 
     std::ofstream out(path);
@@ -70,7 +71,10 @@ void initHitLog() {
 
 }
 
-void appendHitLog(Direction dir){
+void appendHitLog(Direction dir, bool logOn){
+    if (!logOn){
+        return;
+    }
     //things for the log
     double msPerBeat = 60000.0 / 70.0f;
     double beatPos = _songTimeMs / msPerBeat;
@@ -211,6 +215,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     /* ~~~~~~~~~~~ MINI GAME SCENE END ~~~~~~ */
     
     /*addChild(_minigame);*/
+    initHitLog();
     reset();
     return true;
 }
@@ -300,7 +305,7 @@ void GameScene::update(float dt) {
                 Direction dir = _input.getDirection();
                 if (dir != Direction::None) {
                 
-                    appendHitLog(dir);
+                    appendHitLog(dir,_input.isLogOn());
                     
                     
                     if (dir == sequence[_inputStep]) {
@@ -322,7 +327,7 @@ void GameScene::update(float dt) {
 //                CULog("in update loop");
                 // the update loop
                 if (_input.getDirection() != Direction::None) {
-                    appendHitLog(_input.getDirection());
+                    appendHitLog(_input.getDirection(),_input.isLogOn());
                     _player->move(_input.getDirection(), _gridSize, _nRow, _nCol);
                 }
                 std::vector<cugl::Vec2> player_pos;
