@@ -18,6 +18,7 @@
 
 #include "GameScene.h"
 //#include "SLCollisionController.h"
+#include "AudioController.h"
 
 using namespace cugl;
 using namespace cugl::graphics;
@@ -58,11 +59,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Start up the input handler
     _assets = assets;
-
-    // Acquire the scene built by the asset loader and resize it the scene
-    /*_minigame = _assets->get<scene2::SceneNode>("miniGame");
-    _minigame->setContentSize(getSize());
-    _minigame->doLayout();*/
+    Size dimen = getSize();
     
     // Get the background image and constant values
     _background = assets->get<Texture>("background");
@@ -83,6 +80,51 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _collisions.init(getSize());
     _gameState = GameState::PLAYING;
+    
+    // Play background music
+    auto bgm = assets->get<Sound>("bgm");
+    AudioEngine::get()->play("bgm", bgm, true);
+    
+    //hard coded, change later
+    _interval = 60.0f/70.0f*1000 ;
+    _step = 0.0f;
+    _bang = assets->get<Sound>("bang");
+    
+    
+    // Acquire the scene built by the asset loader and resize it
+    std::shared_ptr<scene2::SceneNode> scene = _assets->get<scene2::SceneNode>("game");
+    scene->setContentSize(dimen);
+    scene->doLayout();
+
+    addChild(scene);
+
+    // Initialize buttons from the loaded scene
+    _upButton    = std::dynamic_pointer_cast<scene2::Button>(_assets->get<scene2::SceneNode>("game.buttons.up"));
+    _downButton  = std::dynamic_pointer_cast<scene2::Button>(_assets->get<scene2::SceneNode>("game.buttons.down"));
+    _leftButton  = std::dynamic_pointer_cast<scene2::Button>(_assets->get<scene2::SceneNode>("game.buttons.left"));
+    _rightButton = std::dynamic_pointer_cast<scene2::Button>(_assets->get<scene2::SceneNode>("game.buttons.right"));
+    
+    _upButton->addListener([this](const std::string& name, bool down) {
+        if (down) {
+            
+        }
+    });
+    
+    _downButton->addListener([this](const std::string& name, bool down) {
+        if (down) {
+        }
+    });
+    
+    _leftButton->addListener([this](const std::string& name, bool down) {
+        if (down) {
+        }
+    });
+    
+    _rightButton->addListener([this](const std::string& name, bool down) {
+        if (down) {
+        }
+    });
+    
 
     /* loading in the mini game scene -- START */
 
@@ -194,6 +236,35 @@ void GameScene::update(float dt) {
             }
         }
 
+    _step +=dt*1000;
+    CULog("interval is %f", _interval);
+    if (_step<=0.3*_interval || _step>=0.7*_interval){
+        CULog("in step");
+        _input.readInput();
+        if (_input.didPressReset()) {
+            reset();
+        }
+        std::cout << "Enter update" << endl;
+        if (_gameState==GameState::PLAYING){
+            // the update loop
+            if (_input.getDirection()!= Direction::None){
+                _player->move(_input.getDirection(),_gridSize,_nRow,_nCol);
+            }
+            
+            std::vector<cugl::Vec2> player_pos;
+            player_pos.push_back(_player->getPosition());
+            _valuables.update(getSize(), player_pos);
+            
+            if (_collisions.resolveCollisions(_player, _valuables)) {
+                std::cout<<"Collision between player and valuable"<<endl;
+            }
+        }
+    }
+    if (_step >=_interval){
+        //BANG!!!
+        //(plays Bang on beat)
+        _step =0.0f;
+        AudioEngine::get()->play("bang", _bang, false, _bang->getVolume(), true);
     }
 }
 
@@ -215,10 +286,7 @@ void GameScene::render() {
     _valuables.draw(_batch, getSize());
     _player->draw(_batch);
     _batch->setColor(Color4::BLACK);
-
-    /*if (_isMiniGameActive) {
-        _batch->draw(_miniBackground, Rect(Vec2(300.0f, 300.0f), Size(328.0f, 263.0f)));
-    }*/
+    
      
     _batch->end();
 

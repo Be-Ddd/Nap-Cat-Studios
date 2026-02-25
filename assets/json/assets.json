@@ -450,9 +450,89 @@
             "type": "sample",
             "file": "sounds/bang.ogg",
             "volume": 0.8
+        },
+        "bgm": {
+          "type": "sample",
+          "file": "sounds/bgm.ogg"
         }
     },
     "jsons": {
         "constants": "json/constants.json"
+    },
+    "scene2s": {
+        "game" : {
+            "type": "Node",
+            "format"    : {
+                "type" : "anchored"
+            },
+            "data": { "anchor": [0.5, 0.5] },
+            "children": {
+                  "buttons" : {
+                      "type": "Node",
+                      "data": {
+                          "anchor": [0.0,0.0]
+                      },
+                      "layout": {
+                          "x_anchor": "right",
+                          "y_anchor": "bottom",
+                          "x_offset": 930,
+                          "y_offset": 40,
+                          "absolute": true
+                      },
+                      "children": {
+                          "up": {
+                              "type": "Button",
+                              "data": { "upnode": "icon" },
+                              "children": {
+                                  "icon": { "type": "Image", "data": { "texture": "up" } }
+                              },
+                              "layout": {
+                                  "x_offset": 930,
+                                  "y_offset": 60,
+                                  "absolute": true
+                              }
+                          },
+                          "down": {
+                              "type": "Button",
+                              "data": { "upnode": "icon" },
+                              "children": {
+                                  "icon": { "type": "Image", "data": { "texture": "down" } }
+                              },
+                              "layout": {
+                                  "x_offset": 930,
+                                  "y_offset": 20,
+                                  "absolute": true
+                              }
+                          },
+                          
+                          "left": {
+                              "type": "Button",
+                              "data": { "upnode": "icon" },
+                              "children": {
+                                  "icon": { "type": "Image", "data": { "texture": "left" } }
+                              },
+                              "layout": {
+                                  "x_offset": 930,
+                                  "y_offset": 40,
+                                  "absolute": true
+                              }
+                          },
+                          
+                          "right": {
+                              "type": "Button",
+                              "data": { "upnode": "icon" },
+                              "children": {
+                                  "icon": { "type": "Image", "data": { "texture": "right" } }
+                              },
+                              "layout": {
+                                  "x_offset": 930,
+                                  "y_offset": 40,
+                                  "absolute": true
+                              }
+                          }
+                      }
+                  }
+            }
+        }
     }
 }
