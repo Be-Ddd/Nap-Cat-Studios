@@ -28,21 +28,41 @@ using namespace cugl;
 bool CollisionController::resolveCollisions(const std::shared_ptr<Player>& player, ValuableSet& vset) {
     bool collision = false;
     std::cout<<"enter resolveCollisions"<<std::endl;
-    for (auto it = vset.current.begin(); it != vset.current.end(); ++it) {
+    for (size_t i = 0; i < vset.current.size(); ++i) {
+        std::shared_ptr<ValuableSet::Valuable> val = vset.current[i];
         // Calculate the normal of the (possible) point of collision
-        std::shared_ptr<ValuableSet::Valuable> val = *it;
         // Calculate the grid the player is in
         int x_player = static_cast<int>((player->getPosition().x - 30.0f) / 100.0f);
         int y_player = static_cast<int>((player->getPosition().y) / 100.0f);
         // Calculate the grid the valuable is in
-        int x_val = static_cast<int>(((*it)->position.x - 30.0f) / 100.0f);
-        int y_val = static_cast<int>(((*it)->position.y) / 100.0f);
+        int x_val = static_cast<int>((val->position.x - 30.0f) / 100.0f);
+        int y_val = static_cast<int>((val->position.y) / 100.0f);
         // Pick up automatically when in the same grid, should add stealing process later
         if (x_player == x_val && y_player == y_val && !player->isCarrying()) {
-            (*it)->setState(ValuableSet::Valuable::CARRIED, player->getPlayerID());
-            player->setCarrying(true);
+            CULog("picking up");
+            val->setState(ValuableSet::Valuable::CARRIED, player->getPlayerID());
+            player->setCarrying(true, i);
             collision = true;
         }
     }
     return collision;
+}
+
+void CollisionController::hackyAttemptToPickUP(const std::shared_ptr<Player>& player, ValuableSet& vset) {
+    for (size_t i = 0; i < vset.current.size(); ++i) {
+        std::shared_ptr<ValuableSet::Valuable> val = vset.current[i];
+        // Calculate the normal of the (possible) point of collision
+        // Calculate the grid the player is in
+        int x_player = static_cast<int>((player->getPosition().x - 30.0f) / 100.0f);
+        int y_player = static_cast<int>((player->getPosition().y) / 100.0f);
+        // Calculate the grid the valuable is in
+        int x_val = static_cast<int>((val->position.x - 30.0f) / 100.0f);
+        int y_val = static_cast<int>((val->position.y) / 100.0f);
+        // Pick up automatically when in the same grid, should add stealing process later
+        if (x_player == x_val && y_player == y_val && !player->isCarrying()) {
+            CULog("picking up");
+            val->setState(ValuableSet::Valuable::CARRIED, player->getPlayerID());
+            player->setCarrying(true, i);
+        }
+    }
 }

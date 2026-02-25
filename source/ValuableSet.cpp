@@ -139,7 +139,7 @@ void ValuableSet::setTexture(const std::shared_ptr<Texture>& value) {
 void ValuableSet::spawnValuable(Vec2 p, int t) {
     std::shared_ptr<Valuable> rock = std::make_shared<Valuable>(p, t);
     rock->setState(Valuable::FREE, -1);
-    current.emplace(rock);
+    current.push_back(rock);
 }
 
 /**
@@ -150,11 +150,12 @@ void ValuableSet::spawnValuable(Vec2 p, int t) {
  */
 void ValuableSet::update(Size size, std::vector<cugl::Vec2> pos) {
     // Move asteroids, updating the animation frame
-    for (auto it = current.begin(); it != current.end(); ++it) {
-        if ((*it)->getCarrier() != -1 && (*it)->position != pos[(*it)->getCarrier()]) {
-            (*it)->update(size, pos[(*it)->getCarrier()]);
+    for (size_t i = 0; i < current.size(); ++i) {
+        std::shared_ptr<ValuableSet::Valuable> val = current[i];
+        if (val->getCarrier() != -1 && val->position != pos[val->getCarrier()]) {
+            val->update(size, pos[val->getCarrier()]);
         }
-        (*it)->update(size, (*it)->position);
+        val->update(size, val->position);
     }
 }
 
@@ -168,9 +169,10 @@ void ValuableSet::update(Size size, std::vector<cugl::Vec2> pos) {
  */
 void ValuableSet::draw(const std::shared_ptr<SpriteBatch>& batch, Size size) {
     if (_texture) {
-        for (auto it = current.begin(); it != current.end(); ++it) {
-            float scale = (*it)->getScale();
-            Vec2 pos = (*it)->position;
+        for (size_t i = 0; i < current.size(); ++i) {
+            std::shared_ptr<ValuableSet::Valuable> val = current[i];
+            float scale = val->getScale();
+            Vec2 pos = val->position;
             // Vec2 origin(_radius, _radius);
             Vec2 origin(_width, _height);
 

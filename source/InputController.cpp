@@ -46,13 +46,17 @@ void InputController::readInput() {
     KeyCode down  = KeyCode::ARROW_DOWN;
     KeyCode left  = KeyCode::ARROW_LEFT;
     KeyCode right = KeyCode::ARROW_RIGHT;
+    KeyCode drop = KeyCode::Z;
+    KeyCode uppies = KeyCode::X;
     KeyCode shoot = KeyCode::SPACE;
     KeyCode reset = KeyCode::R;
 
     // Convert keyboard state into game commands
     _dir = Direction::None;
     _didReset = false;
-    
+    _didDrop = false;
+    _didPickUp = false;
+
     // Movement forward/backward
     Keyboard* keys = Input::get<Keyboard>();
     if (keys->keyPressed(up)) {
@@ -65,6 +69,12 @@ void InputController::readInput() {
         _dir =Direction::Left;
     } else if (keys->keyPressed(right)) {
         _dir = Direction::Right;
+    }
+    else if (keys->keyPressed(drop)) {
+        _didDrop = true;
+    }
+    else if (keys->keyPressed(uppies)) {
+        _didPickUp = true;
     }
     
     // Reset the game

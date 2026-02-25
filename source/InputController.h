@@ -34,6 +34,8 @@ private:
 
     /** Did we press the reset button? */
     bool _didReset;
+    bool _didDrop;
+    bool _didPickUp;
 
 public:
     
@@ -43,6 +45,12 @@ public:
     }
     bool didPress() const{
         return _didPress;
+    }
+    bool didDrop() const {
+        return _didDrop;
+    }
+    bool didPickUp() const {
+        return _didPickUp;
     }
     /**
      * Returns whether the reset button was pressed.

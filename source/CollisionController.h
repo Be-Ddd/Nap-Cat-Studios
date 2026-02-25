@@ -78,5 +78,6 @@ class CollisionController {
             return true;
         }
         bool resolveCollisions(const std::shared_ptr<Player>& player, ValuableSet& vst);
+        void hackyAttemptToPickUP(const std::shared_ptr<Player>& player, ValuableSet& vset);
 };
 #endif /*__COLLISION_CONTROLLER_H__*/

@@ -51,6 +51,9 @@ private:
     
     /** Whether player is carrying an object */
     bool _isCarrying;
+
+    /** the id of the thing being carried*/
+    int _carried_id;
     
     /** Time elapsed in current movement step (seconds) */
     float _moveTime;
@@ -161,7 +164,13 @@ public:
      *
      * @param carrying Whether the player is carrying
      */
-    void setCarrying(bool carrying) { _isCarrying = carrying; }
+    void setCarrying(bool carrying, int carrier_id) { _isCarrying = carrying; _carried_id = carrier_id;}
+    /** 
+    * Gets the id of the carried obj, returns -1 if non carried
+    */
+    int getCarried() {
+        return _carried_id;
+    }
 
 #pragma mark -
 #pragma mark Movement

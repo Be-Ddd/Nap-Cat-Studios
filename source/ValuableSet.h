@@ -65,17 +65,17 @@ public:
          * @param type  The type (1 or 2)
          * @param texture The texture
          */
-        /*Valuable(const cugl::Vec2 p, int type, std::shared_ptr<cugl::graphics::Texture> texture);*/
+         /*Valuable(const cugl::Vec2 p, int type, std::shared_ptr<cugl::graphics::Texture> texture);*/
 
-        /**
-         * Returns the scale of this valuable.
-         *
-         * Multiply this scale by the standard valuable radius
-         * ({@link ValuableSet#getRadius}) to get the "true" radius
-         * of a valuable.
-         *
-         * @return the scale of this valuable.
-         */
+         /**
+          * Returns the scale of this valuable.
+          *
+          * Multiply this scale by the standard valuable radius
+          * ({@link ValuableSet#getRadius}) to get the "true" radius
+          * of a valuable.
+          *
+          * @return the scale of this valuable.
+          */
         float getScale() const { return _scale; }
 
         /**
@@ -140,7 +140,7 @@ private:
 #pragma mark The Set
 public:
     /** The collection of all ACTIVE valuables. Allow the user direct access */
-    std::unordered_set<std::shared_ptr<Valuable>> current;
+    std::vector<std::shared_ptr<Valuable>> current;
 
     /**
      * Creates a valuable set with the default values.
@@ -202,6 +202,9 @@ public:
      *
      */
     void update(cugl::Size size, std::vector<cugl::Vec2> pos);
+
+    /** sets the val with id to carrier id = -1 */
+    void set_val_dropped(int val_id) { current[val_id]->setState(Valuable::Status::FREE, -1); }
 
     /**
      * Draws all active valuables to the sprite batch within the given bounds.

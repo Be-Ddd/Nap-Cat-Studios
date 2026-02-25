@@ -124,13 +124,23 @@ void GameScene::update(float dt) {
         if (_input.getDirection()!= Direction::None){
             _player->move(_input.getDirection(),_gridSize,_nRow,_nCol);
         }
+        if (_input.didDrop()) {
+            _valuables.set_val_dropped(_player->getCarried());
+            _player->setCarrying(false, -1);
+
+        }
+        if (_input.didPickUp()) {
+            _collisions.hackyAttemptToPickUP(_player, _valuables);
+        }
         std::vector<cugl::Vec2> player_pos;
         player_pos.push_back(_player->getPosition());
         _valuables.update(getSize(), player_pos);
 
+        /**
         if (_collisions.resolveCollisions(_player, _valuables)) {
             std::cout<<"Collision between player and valuable"<<endl;
         }
+        */
     }
 }
 
