@@ -26,9 +26,8 @@ using namespace cugl;
  * do not need an init method.  This constructor is sufficient.
  */
 InputController::InputController() :
-_forward(0),
-_turning(0),
-_didFire(false) {
+_dir(Direction::None),
+_didPress(false){
 }
 
 
@@ -51,28 +50,21 @@ void InputController::readInput() {
     KeyCode reset = KeyCode::R;
 
     // Convert keyboard state into game commands
-    _forward = _turning = 0;
-    _didFire = false;
+    _dir = Direction::None;
     _didReset = false;
     
     // Movement forward/backward
     Keyboard* keys = Input::get<Keyboard>();
-    if (keys->keyDown(up) && !keys->keyDown(down)) {
-        _forward = 1;
-    } else if (keys->keyDown(down) && !keys->keyDown(up)) {
-        _forward = -1;
+    if (keys->keyPressed(up)) {
+        _dir = Direction::Up;
+    } else if (keys->keyPressed(down)) {
+        _dir = Direction::Down;
     }
-    
     // Movement left/right
-    if (keys->keyDown(left) && !keys->keyDown(right)) {
-        _turning = -1;
-    } else if (keys->keyDown(right) && !keys->keyDown(left)) {
-        _turning = 1;
-    }
-
-    // Shooting
-    if (keys->keyDown(shoot)) {
-        _didFire = true;
+    else if (keys->keyPressed(left)) {
+        _dir =Direction::Left;
+    } else if (keys->keyPressed(right)) {
+        _dir = Direction::Right;
     }
     
     // Reset the game

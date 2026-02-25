@@ -134,6 +134,8 @@ private:
     std::shared_ptr<cugl::graphics::Texture> _texture;
     /** The radius of a general valuable */
     float _radius;
+    float _width;
+    float _height;
 
 #pragma mark The Set
 public:

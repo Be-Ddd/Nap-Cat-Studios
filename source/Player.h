@@ -14,6 +14,7 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 #include <cugl/cugl.h>
+#include "Direction.h"
 
 /**
  * Class representing a player in a grid-based game.
@@ -26,13 +27,6 @@ class Player {
 #pragma mark States
     
 public:
-    /** Cardinal directions for movement */
-    enum class Direction {
-        Up,    // Negative Y in grid space
-        Right, // Positive X in grid space
-        Down,  // Positive Y in grid space
-        Left   // Negative X in grid space
-    };
 
 #pragma mark -
 #pragma mark Attributes
@@ -70,6 +64,9 @@ private:
     float _scale;
     
     float _radius;
+    float _width;
+    float _height;
+    
     
     /** The texture for rendering this player */
     std::shared_ptr<cugl::graphics::Texture> _texture;
@@ -223,6 +220,7 @@ public:
      * @param dt Delta time in seconds
      */
     void update(float dt);
+    void move(Direction dir, float gridSize, int nRow, int nCol);
     
 #pragma mark -
 #pragma mark Rendering

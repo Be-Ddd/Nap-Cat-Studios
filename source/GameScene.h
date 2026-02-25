@@ -36,6 +36,16 @@ protected:
     /** The asset manager for this game mode. */
     std::shared_ptr<cugl::AssetManager> _assets;
     
+    int _nRow = 6;
+    int _nCol = 9;
+    int _rowNum;
+    int _colNum;
+    float _leftOffeset = 30.0f;
+    float _topOffeset = 120.0f;
+    float _rightOffeset = 350.0f;
+    float _gridSize = 100.0f;
+    
+    
     // CONTROLLERS are attached directly to the scene (no pointers)
     /** The controller to manage the ship */
     InputController _input;

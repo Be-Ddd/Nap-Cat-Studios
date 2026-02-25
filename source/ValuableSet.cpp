@@ -29,10 +29,10 @@ void ValuableSet::Valuable::setType(int type) {
     _type = type;
     switch (type) {
     case 2:
-        _scale = 0.2;
+        _scale = 0.14;
         break;
     case 1:
-        _scale = .15;
+        _scale = 0.11;
         break;
     default:
         _scale = 0.0f;
@@ -120,6 +120,8 @@ void ValuableSet::setTexture(const std::shared_ptr<Texture>& value) {
         Size size = value->getSize();
 
         _radius = std::max(size.width, size.height) / 2;
+        _width = size.width / 2.0f;
+        _height = size.height / 2.0f;
         _texture = value;
     }
     else {
@@ -149,7 +151,7 @@ void ValuableSet::spawnValuable(Vec2 p, int t) {
 void ValuableSet::update(Size size, std::vector<cugl::Vec2> pos) {
     // Move asteroids, updating the animation frame
     for (auto it = current.begin(); it != current.end(); ++it) {
-        if ((*it)->getCarrier() != -1) {
+        if ((*it)->getCarrier() != -1 && (*it)->position != pos[(*it)->getCarrier()]) {
             (*it)->update(size, pos[(*it)->getCarrier()]);
         }
         (*it)->update(size, (*it)->position);
@@ -169,7 +171,8 @@ void ValuableSet::draw(const std::shared_ptr<SpriteBatch>& batch, Size size) {
         for (auto it = current.begin(); it != current.end(); ++it) {
             float scale = (*it)->getScale();
             Vec2 pos = (*it)->position;
-            Vec2 origin(_radius, _radius);
+            // Vec2 origin(_radius, _radius);
+            Vec2 origin(_width, _height);
 
             Affine2 trans;
             trans.scale(scale);

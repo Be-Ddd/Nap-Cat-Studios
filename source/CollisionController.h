@@ -26,6 +26,9 @@
 #define __COLLISION_CONTROLLER_H__
 #include <cugl/cugl.h>
 #include "ObjectModel.h"
+#include "Player.h"
+#include "ValuableSet.h"
+
 /**
  * Device-independent input manager.
  *
@@ -74,6 +77,6 @@ class CollisionController {
             _size = size; 
             return true;
         }
-        bool resolveCollisions();
+        bool resolveCollisions(const std::shared_ptr<Player>& player, ValuableSet& vst);
 };
 #endif /*__COLLISION_CONTROLLER_H__*/
