@@ -13,7 +13,11 @@ class AudioController {
         static std::shared_ptr<cugl::AssetManager> _assets;
         static std::shared_ptr<cugl::audio::AudioQueue> _queue;
     
+    //hard coded, delete later
+    int _bpm = 70;
+    
     public:
+    int getBPM() const {return _bpm;}
         static void init(const std::shared_ptr<cugl::AssetManager>& assets);
         static void shutdown();
     

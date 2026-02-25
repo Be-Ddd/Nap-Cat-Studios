@@ -44,6 +44,8 @@ protected:
     float _topOffeset = 120.0f;
     float _rightOffeset = 350.0f;
     float _gridSize = 100.0f;
+    float _interval;
+    float _step;
     
     
     // CONTROLLERS are attached directly to the scene (no pointers)
@@ -51,6 +53,7 @@ protected:
     InputController _input;
     /** The controller for managing collisions */
     CollisionController _collisions;
+    
     
     // MODELS should be shared pointers or a data structure of shared pointers
     /** The JSON value with all of the constants */
@@ -81,6 +84,15 @@ protected:
     std::shared_ptr<cugl::audio::Sound> _blast;
     
     std::shared_ptr<Player> _player;
+    
+    std::shared_ptr<cugl::scene2::Button> _upButton;
+    
+    std::shared_ptr<cugl::scene2::Button> _downButton;
+    
+    std::shared_ptr<cugl::scene2::Button> _leftButton;
+    
+    std::shared_ptr<cugl::scene2::Button> _rightButton;
+    
 public:
 #pragma mark -
 #pragma mark Constructors
