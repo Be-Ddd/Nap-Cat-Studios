@@ -21,6 +21,7 @@
 #include "CollisionController.h"
 #include "ValuableSet.h"
 #include "Player.h"
+#include <fstream>
 
 
 
@@ -35,7 +36,11 @@ class GameScene : public cugl::scene2::Scene2 {
 protected:
     /** The asset manager for this game mode. */
     std::shared_ptr<cugl::AssetManager> _assets;
-    
+#pragma mark -
+#pragma mark Helpers
+    std::ofstream _logOut;
+    bool _logging = false;
+
     int _nRow = 6;
     int _nCol = 9;
     int _rowNum;
@@ -105,7 +110,12 @@ protected:
     bool _showOverlay;
     /* Current progress through the unlock sequence (Up, Left, Right, Down) */
     int _inputStep;
+    
+
+    
 public:
+
+    
 #pragma mark -
 #pragma mark Constructors
     /**

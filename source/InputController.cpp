@@ -27,7 +27,8 @@ using namespace cugl;
  */
 InputController::InputController() :
 _dir(Direction::None),
-_didPress(false){
+_didPress(false),
+_logOn(false){
 }
 
 
@@ -48,7 +49,7 @@ void InputController::readInput() {
     KeyCode right = KeyCode::ARROW_RIGHT;
     KeyCode drop = KeyCode::Z;
     KeyCode uppies = KeyCode::X;
-    KeyCode shoot = KeyCode::SPACE;
+    KeyCode log = KeyCode::L;
     KeyCode reset = KeyCode::R;
 
     // Convert keyboard state into game commands
@@ -80,5 +81,8 @@ void InputController::readInput() {
     // Reset the game
     if (keys->keyDown(reset)) {
         _didReset = true;
+    }
+    if (keys->keyPressed(log)){
+        _logOn = !_logOn;
     }
 }

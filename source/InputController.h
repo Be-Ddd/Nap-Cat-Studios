@@ -36,6 +36,7 @@ private:
     bool _didReset;
     bool _didDrop;
     bool _didPickUp;
+    bool _logOn = false;
 
 public:
     
@@ -59,6 +60,10 @@ public:
      */
     bool didPressReset() const {
         return _didReset;
+    }
+    
+    bool isLogOn() const{
+        return _logOn;
     }
 
     /**

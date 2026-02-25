@@ -19,6 +19,7 @@
 #include "GameScene.h"
 //#include "SLCollisionController.h"
 #include "AudioController.h"
+#include <vector>
 
 using namespace cugl;
 using namespace cugl::graphics;
@@ -34,7 +35,72 @@ using namespace std;
 #pragma mark -
 #pragma mark Helper
 
- 
+
+struct HitLog {
+    double timeMs;     // Absolute time since song start
+    int beatIndex;     // Nearest beat number
+    int errorMs;       // Signed timing error in milliseconds
+    int direction;     // Direction enum as int
+};
+
+std::vector<HitLog> _hitLog;
+
+double _songTimeMs = 3.429f*1000.0f;
+
+#include <fstream>
+#include <iomanip>
+
+void initHitLog() {
+    std::string path =
+        cugl::Application::get()->getSaveDirectory() + "hitlog.csv";
+
+    // If file already exists, do nothing
+    if (std::filesystem::exists(path)) {
+        return;
+    }
+
+    std::ofstream out(path);
+    if (!out.is_open()) {
+        CULog("Failed to create %s", path.c_str());
+        return;
+    }
+
+    out << "time_ms,beat,error_ms,direction\n";
+    out.close();
+
+    CULog("Created hitlog.csv at %s",path.c_str());
+}
+
+void appendHitLog(Direction dir){
+    //things for the log
+    double msPerBeat = 60000.0 / 70.0f;
+    double beatPos = _songTimeMs / msPerBeat;
+    int nearestBeat = (int)std::llround(beatPos);
+    double errorMsDouble = (beatPos - nearestBeat) * msPerBeat;
+    int errorMs = (int)std::round(errorMsDouble);
+    _hitLog.push_back({
+            _songTimeMs,
+            nearestBeat,
+            errorMs,
+            (int)dir
+        });
+    std::string path =
+            cugl::Application::get()->getSaveDirectory() + "hitlog.csv";
+
+        std::ofstream out(path, std::ios::app);
+
+        if (!out.is_open()) {
+            CULog("Failed to append to %s", path.c_str());
+            return;
+        }
+
+        out << (int)_songTimeMs << ","
+            << nearestBeat << ","
+            << errorMs << ","
+            << (int)dir << "\n";
+}
+
+
 
 #pragma mark -
 #pragma mark Constructors
@@ -182,13 +248,21 @@ void GameScene::reset() {
 void GameScene::update(float dt) {
     // Read the keyboard for each controller.
     _step += dt * 1000;
-    CULog("interval is %f", _interval);
-    if (_step <= 0.3 * _interval || _step >= 0.7 * _interval) {
-        CULog("in step");
-        _input.readInput();
-        if (_input.didPressReset()) {
-            reset();
-        }
+    
+    //records for the log
+    _songTimeMs += dt * 1000.0;
+    
+    
+    _input.readInput();
+    if (_input.didPressReset()) {
+        reset();
+    }
+    CULog ("log is %d", _input.isLogOn());
+    if (_input.isLogOn()){
+        initHitLog();
+    }
+    
+    if (_step <= 0.2 * _interval || _step >= 0.8 * _interval) {
         // Toggle mini-game overlay with M key
         cugl::Keyboard* keys = cugl::Input::get<cugl::Keyboard>();
         if (keys->keyPressed(cugl::KeyCode::M)) {
@@ -225,6 +299,10 @@ void GameScene::update(float dt) {
                 };
                 Direction dir = _input.getDirection();
                 if (dir != Direction::None) {
+                
+                    appendHitLog(dir);
+                    
+                    
                     if (dir == sequence[_inputStep]) {
                         _inputStep++;
                         if (_inputStep == 4) {
@@ -241,8 +319,10 @@ void GameScene::update(float dt) {
                 }
             }
             else {
+//                CULog("in update loop");
                 // the update loop
                 if (_input.getDirection() != Direction::None) {
+                    appendHitLog(_input.getDirection());
                     _player->move(_input.getDirection(), _gridSize, _nRow, _nCol);
                 }
                 std::vector<cugl::Vec2> player_pos;
