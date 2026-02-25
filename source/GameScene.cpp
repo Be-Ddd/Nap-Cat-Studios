@@ -77,6 +77,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     );
     _player = std::make_shared<Player>(start);
     _player->setTexture(assets->get<Texture>("player"));
+    _player->setCarry(assets->get<Texture>("carry"));
     
     _collisions.init(getSize());
     _gameState = GameState::PLAYING;

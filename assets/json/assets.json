@@ -23,6 +23,9 @@
         "player": {
             "file": "textures/player.png"
         },
+        "carry":{
+            "file":"textures/player_carry.png"
+        },
         "miniGame_background 1": {
             "file": "textures/miniGame_background.png"
         },

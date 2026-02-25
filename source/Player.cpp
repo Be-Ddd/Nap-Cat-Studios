@@ -32,6 +32,7 @@ Player::Player(const Vec2& pos) :
     _moveDuration(0.2f), // change later
     _facing(Direction::Down),
     _texture(nullptr),
+    _carry(nullptr),
     _node(nullptr),
     _scale(0.15f),
     _radius(0.0f)
@@ -101,6 +102,16 @@ void Player::setTexture(const std::shared_ptr<cugl::graphics::Texture>& texture)
     }else{
         _radius = 0.0f;
         _texture =nullptr;
+    }
+}
+
+void Player::setCarry(const std::shared_ptr<cugl::graphics::Texture> &texture){
+    if (texture) {
+
+        _carry = texture;
+    }else{
+        _radius = 0.0f;
+        _carry =nullptr;
     }
 }
 
@@ -194,7 +205,7 @@ void Player::move(Direction dir, float gridSize, int nRow, int nCol){
  * Draws this player to the sprite batch.
  */
 void Player::draw(const std::shared_ptr<graphics::SpriteBatch>& batch) {
-    if (_texture != nullptr && batch != nullptr) {
+    if (_texture != nullptr && batch != nullptr &&!_isCarrying) {
         float scale = getScale();
         Vec2 pos = getPosition();
         // Vec2 origin(_radius,_radius);
@@ -205,5 +216,14 @@ void Player::draw(const std::shared_ptr<graphics::SpriteBatch>& batch) {
         trans.translate(pos);
 
         batch->draw(_texture, origin, trans);
+    }else if (_carry!=nullptr && batch!=nullptr && _isCarrying){
+        Vec2 pos = getPosition();
+        Vec2 origin(_carry->getSize().width/2.0f, _carry->getSize().height/2.0f);
+        
+        Affine2 trans;
+        trans.scale(1.0f);
+        trans.translate(pos);
+
+        batch->draw(_carry, origin, trans);
     }
 }

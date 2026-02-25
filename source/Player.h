@@ -70,6 +70,7 @@ private:
     
     /** The texture for rendering this player */
     std::shared_ptr<cugl::graphics::Texture> _texture;
+    std::shared_ptr<cugl::graphics::Texture> _carry;
     
     /** The scene graph node for rendering */
     std::shared_ptr<cugl::scene2::PolygonNode> _node;
@@ -263,6 +264,7 @@ public:
      * @param texture   The texture for the sprite sheet
      */
     void setTexture(const std::shared_ptr<cugl::graphics::Texture>& texture);
+    void setCarry(const std::shared_ptr<cugl::graphics::Texture>& texture);
     float getScale(){ return _scale;}
 };
 
