@@ -21,6 +21,7 @@
 #include "CollisionController.h"
 #include "ValuableSet.h"
 #include "Player.h"
+#include "TileModel.h"
 #include <fstream>
 
 
@@ -48,10 +49,11 @@ protected:
     float _leftOffeset = 30.0f;
     float _topOffeset = 120.0f;
     float _rightOffeset = 350.0f;
+    float _bottomOffeset = 0.0f;
     float _gridSize = 100.0f;
     float _interval;
     float _step;
-    
+    std::shared_ptr<TileModel> _tileModel;
     
     // CONTROLLERS are attached directly to the scene (no pointers)
     /** The controller to manage the ship */

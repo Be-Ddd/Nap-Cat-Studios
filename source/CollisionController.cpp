@@ -6,6 +6,7 @@
 //
 
 #include "CollisionController.h"
+#include "TileModel.h"
 
 using namespace cugl;
 
@@ -48,19 +49,23 @@ bool CollisionController::resolveCollisions(const std::shared_ptr<Player>& playe
     return collision;
 }
 
-bool CollisionController::hackyAttemptToPickUP(const std::shared_ptr<Player>& player, ValuableSet& vset) {
+bool CollisionController::hackyAttemptToPickUP(const std::shared_ptr<Player>& player, ValuableSet& vset, const std::shared_ptr<TileModel>& tiles) {
     bool collision = false;
     for (size_t i = 0; i < vset.current.size(); ++i) {
         std::shared_ptr<ValuableSet::Valuable> val = vset.current[i];
         // Calculate the normal of the (possible) point of collision
         // Calculate the grid the player is in
-        int x_player = static_cast<int>((player->getPosition().x - 30.0f) / 100.0f);
-        int y_player = static_cast<int>((player->getPosition().y) / 100.0f);
+        // int x_player = static_cast<int>((player->getPosition().x - 30.0f) / 100.0f);
+        // int y_player = static_cast<int>((player->getPosition().y) / 100.0f);
+        auto [r_player, c_player] = tiles->worldToGrid(cugl::Vec2(player->getPosition().x, player->getPosition().y));
+        CULog ("x_val of player %d y_val of player %d", r_player, c_player);
         // Calculate the grid the valuable is in
-        int x_val = static_cast<int>((val->position.x - 30.0f) / 100.0f);
-        int y_val = static_cast<int>((val->position.y) / 100.0f);
+//        int x_val = static_cast<int>((val->position.x - 30.0f) / 100.0f);
+//        int y_val = static_cast<int>((val->position.y) / 100.0f);
+        auto [r_val, c_val] = tiles->worldToGrid(cugl::Vec2(val->position.x, val->position.y));
+        CULog ("x_val of valuable %d y_val of valuable %d", r_val, c_val);
         // Pick up automatically when in the same grid, should add stealing process later
-        if (x_player == x_val && y_player == y_val && !player->isCarrying()) {
+        if (r_player == r_val && c_player == c_val && !player->isCarrying()) {
             CULog("picking up");
             val->setState(ValuableSet::Valuable::CARRIED, player->getPlayerID());
             player->setCarrying(true, i);

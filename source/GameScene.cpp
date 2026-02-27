@@ -161,6 +161,9 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _step = 0.0f;
     _bang = assets->get<Sound>("bang");
     
+    // Initialize tile model
+    _tileModel = std::make_shared<TileModel>();
+    _tileModel->init(_nRow, _nCol, _gridSize, _leftOffeset, _bottomOffeset);
     
     // Acquire the scene built by the asset loader and resize it
     std::shared_ptr<scene2::SceneNode> scene = _assets->get<scene2::SceneNode>("game");
@@ -262,7 +265,7 @@ void GameScene::update(float dt) {
     if (_input.didPressReset()) {
         reset();
     }
-    CULog ("log is %d", _input.isLogOn());
+//    CULog ("log is %d", _input.isLogOn());
     
     if (_step <= 0.2 * _interval || _step >= 0.8 * _interval) {
         // Toggle mini-game overlay with M key
@@ -277,7 +280,7 @@ void GameScene::update(float dt) {
             _player->setCarrying(false, -1);
 
         }
-        if (_input.didPickUp() and _collisions.hackyAttemptToPickUP(_player, _valuables)) {
+        if (_input.didPickUp() and _collisions.hackyAttemptToPickUP(_player, _valuables, _tileModel)) {
             if (_showOverlay == false) {
                 _showOverlay = true;
                 _overlay->setVisible(true);

@@ -28,6 +28,7 @@
 #include "ObjectModel.h"
 #include "Player.h"
 #include "ValuableSet.h"
+#include "TileModel.h"
 
 /**
  * Device-independent input manager.
@@ -78,6 +79,6 @@ class CollisionController {
             return true;
         }
         bool resolveCollisions(const std::shared_ptr<Player>& player, ValuableSet& vst);
-        bool hackyAttemptToPickUP(const std::shared_ptr<Player>& player, ValuableSet& vset);
+        bool hackyAttemptToPickUP(const std::shared_ptr<Player>& player, ValuableSet& vset, const std::shared_ptr<TileModel>& tiles);
 };
 #endif /*__COLLISION_CONTROLLER_H__*/
