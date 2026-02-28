@@ -294,6 +294,7 @@ void GameScene::update(float dt) {
         if (_collisions.resolveCollisions(_player, _valuables)) {
             std::cout<<"Collision between player and valuable"<<endl;
             */
+        _inWindow = true;
 
 
         if (_gameState == GameState::PLAYING) {
@@ -303,23 +304,30 @@ void GameScene::update(float dt) {
                     Direction::Up, Direction::Left, Direction::Right, Direction::Down
                 };
                 Direction dir = _input.getDirection();
-                if (dir != Direction::None) {
+                if (dir != Direction::None && _countDownMini == 0) {
                 
                     appendHitLog(dir,_input.isLogOn());
                     
-                    
+                    _inputOnBeat = true;
                     if (dir == sequence[_inputStep]) {
+                        CULog("on beat");
                         _inputStep++;
                         if (_inputStep == 4) {
                             // Full sequence entered ¡ª dismiss overlay
                             _showOverlay = false;
                             _inputStep = 0;
                             if (_overlay) _overlay->setVisible(false);
+                            _countDownMini = 5;
                         }
                     }
                     else {
-                        // Wrong input ¡ª reset sequence
+                        // Wrong input ¡ª fail the minigame, reset sequence
                         _inputStep = 0;
+                        _showOverlay = false;
+                        _valuables.set_val_dropped(_player->getCarried());
+                        _player->setCarrying(false, -1);
+                        if (_overlay) _overlay->setVisible(false);
+                        _countDownMini = 5;
                     }
                 }
             }
@@ -337,12 +345,38 @@ void GameScene::update(float dt) {
             }
         }
     }
+    else {
+        _inWindow = false;
+        if (_gameState == GameState::PLAYING) {
+            if (!_inWindow && _wasInWindow) { // Exit an input window
+                if (!_inputOnBeat && _countDownMini == 0 && _showOverlay) {
+                    CULog("off beat");
+                    _inputStep = 0;
+                    _showOverlay = false;
+                    _valuables.set_val_dropped(_player->getCarried());
+                    _player->setCarrying(false, -1);
+                    if (_overlay) _overlay->setVisible(false);
+                    _countDownMini = 5;
+                }
+                if (_showOverlay) { // Check again
+                    _countDownMini = max(_countDownMini - 1, 0);
+                    CULog("%d", _countDownMini);
+                }
+                
+            }
+        }
+    }
+
+    if (_inWindow && !_wasInWindow) { // Enter a new input window
+        _inputOnBeat = false;
+    }
 
     if (_step >=_interval){
         //BANG!!!
-        //(plays Bang on beat)
+        //(plays Bang on beat)    
         _step =0.0f;
     }
+    _wasInWindow = _inWindow;
 }
 
 /**
