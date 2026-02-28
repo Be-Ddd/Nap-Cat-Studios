@@ -151,6 +151,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Play background music
     auto bgm = assets->get<Sound>("bgm");
     AudioEngine::get()->play("bgm", bgm, true);
+    global_start_stamp.mark();
     timestamp_by_beat = { global_start_stamp,global_start_stamp + 70/60 * 1000000 ,global_start_stamp ,global_start_stamp};
     inputs_by_beat = { 4,GameScene::InputType::NO_INPUT };
     //hard coded, change later
@@ -253,18 +254,18 @@ void GameScene::update(float dt) {
     Uint64 elapsedMs = Timestamp::ellapsedMillis(global_start_stamp, current_time);
     int updatedBeatNumber = (elapsedMs * 70 / 60000) % 4;
     if (global_beat != updatedBeatNumber) {
+        //CULog("%d beat", global_beat);
         global_beat = updatedBeatNumber;
         timestamp_by_beat[global_beat].set(current_time);
-        timestamp_by_beat[(global_beat + 1) % 4] = current_time + (70 / 60) * 1000000;
+        timestamp_by_beat[(global_beat + 1) % 4] = current_time + (70 / 60) * 1000000000;
         _gameState = global_beat >= 2 ? GameState::OUTPUT : GameState::INPUT;
-        if (global_beat == 3) {
+        if (global_beat == 3 and _gameState == GameState::OUTPUT) {
             inputs_by_beat[0] = InputType::NO_INPUT;
             inputs_by_beat[1] = InputType::NO_INPUT;
         }
         CULog("global beat %d, game state %d", global_beat, _gameState);
         CULog("recorded actions: %d %d %d %d", inputs_by_beat[0], inputs_by_beat[1], inputs_by_beat[2], inputs_by_beat[3]);
     }
-    //Log("%d beat", global_beat);
     
     //records for the log
     _songTimeMs += dt * 1000.0;
@@ -401,6 +402,7 @@ void GameScene::_gestureInputProcesserHelper() {
         //CULog("release time, %llu", release.getTime());
         //CULog("delta %llu", Timestamp::ellapsedMillis(press,release));
         float smallest_delta = 10000;
+        //press = press - global_start_stamp
         int smallest_beat_index = -1;
         for (int i = 0; i < 4; i++) {
             float delta1 = Timestamp::ellapsedMillis(timestamp_by_beat[i], press);
@@ -412,7 +414,7 @@ void GameScene::_gestureInputProcesserHelper() {
                 smallest_beat_index = i;
             }
         }
-        CULog("Closest delta: %f ms (beat index %d)", smallest_delta, smallest_beat_index);
+        //CULog("Closest delta: %f ms (beat index %d)", smallest_delta, smallest_beat_index);
         //CULog("temp");
         if (inputs_by_beat[smallest_beat_index] == InputType::NO_INPUT) {
             InputType interpreted_action = _interpretActionHelper(first, second);
@@ -432,10 +434,10 @@ GameScene::InputType GameScene::_interpretActionHelper(TouchEvent first, TouchEv
     else {
         Vec2 displacment = second.position - first.position;
         if (abs(displacment.x) > abs(displacment.y)) {
-            return displacment.x <= 0 ? GameScene::InputType::RIGHT_SWIPE : GameScene::InputType::LEFT_SWIPE;
+            return displacment.x >= 0 ? GameScene::InputType::RIGHT_SWIPE : GameScene::InputType::LEFT_SWIPE;
         }
         else {
-            return displacment.y <= 0 ? GameScene::InputType::UP_SWIPE : GameScene::InputType::DOWN_SWIPE;
+            return displacment.y < 0 ? GameScene::InputType::UP_SWIPE : GameScene::InputType::DOWN_SWIPE;
         }
     }
 }
