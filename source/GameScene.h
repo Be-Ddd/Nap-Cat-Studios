@@ -118,6 +118,8 @@ protected:
     bool _inWindow = false;
     /* Was in the input window during last update (used to track enter and exit of input window) */
     bool _wasInWindow = false;
+    /* Random generated sequence for mini game*/
+    std::vector<Direction> directionSequence;
     
 
     
