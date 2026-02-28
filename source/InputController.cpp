@@ -102,7 +102,9 @@ void InputController::readInput() {
         } else if(key_board->keyReleased(left)) {
             dir = Vec2(-100,0);
         } else if(key_board->keyReleased(right)) {
-            dir = Vec2(0,-100);
+            dir = Vec2(100,0);
+        } else if(key_board->keyReleased(tap)) {
+            dir = Vec2(0,0);
         }
 
         _end_touch_event.position = dir;

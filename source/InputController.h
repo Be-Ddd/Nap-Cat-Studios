@@ -30,7 +30,6 @@ private:
     
     Direction _dir;
 
-    bool _input_ready;
     TouchEvent _start_touch_event;
     TouchEvent _end_touch_event;
     
@@ -44,10 +43,6 @@ private:
     bool _pressed = false;
     bool _logOn = false;
 
-    void clearTouchEvents() {
-        _start_touch_event.pressure = 0;
-        _end_touch_event.pressure = 0;
-    }
     
 
 public:
@@ -63,7 +58,7 @@ public:
     }
 
     bool queryInputReady() const {
-        return _input_ready && _start_touch_event.pressure && _end_touch_event.pressure;
+        return _start_touch_event.pressure && _end_touch_event.pressure;
     }
 
     bool queryStartEventReady(){
@@ -78,10 +73,14 @@ public:
     TouchEvent peekEndEvent() {
         return _end_touch_event;
     }
-    std::pair<TouchEvent, TouchEvent> popCompletedEvent () {
-        _input_ready = false;
-        clearTouchEvents();
+    std::pair<TouchEvent, TouchEvent> peekCompletedEvent () {
         return std::pair(_start_touch_event, _end_touch_event);
+    }
+    void clearTouchEvents() {
+        _start_touch_event = TouchEvent();
+        _start_touch_event.pressure = 0;
+        _end_touch_event = TouchEvent();
+        _end_touch_event.pressure = 0;
     }
 
     bool didPickUp() const {

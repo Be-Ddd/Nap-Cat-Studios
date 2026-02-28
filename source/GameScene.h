@@ -50,8 +50,9 @@ protected:
     float _rightOffeset = 350.0f;
     float _gridSize = 100.0f;
     float _interval;
-    float _step;
-    
+    int global_beat = 0;
+    Timestamp global_start_stamp;
+    std::vector< Timestamp> timestamp_by_beat;
     
     // CONTROLLERS are attached directly to the scene (no pointers)
     /** The controller to manage the ship */
@@ -70,7 +71,9 @@ protected:
     
     /** The location of all of the active asteroids */
     enum class GameState {
-        PLAYING,
+        INPUT,
+        OUTPUT,
+        MBS,
         WON,
         LOST
     };
@@ -110,8 +113,20 @@ protected:
     bool _showOverlay;
     /* Current progress through the unlock sequence (Up, Left, Right, Down) */
     int _inputStep;
-    
 
+    enum class InputType {
+        UP_SWIPE,
+        DOWN_SWIPE,
+        LEFT_SWIPE,
+        RIGHT_SWIPE,
+        TAP,
+        HOLD,
+        NO_INPUT,
+        FAILED_INPUT
+    };
+    std::vector< InputType> inputs_by_beat;
+    void _gestureInputProcesserHelper();
+    InputType _interpretActionHelper(TouchEvent, TouchEvent);
     
 public:
 
