@@ -56,8 +56,9 @@ void initHitLog() {
         cugl::Application::get()->getSaveDirectory() + "hitlog.csv";
 
     // If file already exists, do nothing
-    if (std::filesystem::exists(path)) {
-        return;
+    std::ifstream check(path);
+    if (check.good()) {
+        return;  // file already exists
     }
 
     std::ofstream out(path);
@@ -71,7 +72,10 @@ void initHitLog() {
 
 }
 
-void appendHitLog(Direction dir){
+void appendHitLog(Direction dir, bool logOn){
+    if (!logOn){
+        return;
+    }
     //things for the log
     double msPerBeat = 60000.0f / bpm;
     double beatPos = _songTimeMs / msPerBeat;
@@ -213,6 +217,7 @@ bool GameScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     /* ~~~~~~~~~~~ MINI GAME SCENE END ~~~~~~ */
     
     /*addChild(_minigame);*/
+    initHitLog();
     reset();
     return true;
 }
@@ -254,17 +259,20 @@ void GameScene::update(float dt) {
     Timestamp current_time = Timestamp();
     Uint64 elapsedMs = Timestamp::ellapsedMillis(global_start_stamp, current_time);
     int updatedBeatNumber = (int) (elapsedMs / _interval) % 4;
+    bool beat_change = false;
     if (global_beat != updatedBeatNumber) {
+        beat_change = true;
         CULog("%d beat", global_beat);
         global_beat = updatedBeatNumber;
         timestamp_by_beat[global_beat].mark();
         timestamp_by_beat[(global_beat + 1) % 4] = current_time + _interval * 1000000;
-        _gameState = global_beat >= 2 ? GameState::OUTPUT : GameState::INPUT;
+        if (_gameState == GameState::OUTPUT || _gameState == GameState::INPUT) {
+            _gameState = global_beat >= 2 ? GameState::OUTPUT : GameState::INPUT;
+        }
         if (global_beat == 3 and _gameState == GameState::OUTPUT) {
             inputs_by_beat[0] = InputType::NO_INPUT;
             inputs_by_beat[1] = InputType::NO_INPUT;
         }
-        //CULog("global beat %d, game state %d", global_beat, _gameState);
         //CULog("recorded actions: %d %d %d %d", inputs_by_beat[0], inputs_by_beat[1], inputs_by_beat[2], inputs_by_beat[3]);
         //CULog("global beat %d, actie time stamp %llu", global_beat, timestamp_by_beat[global_beat].getTime());
         //CULog("%llu",  timestamp_by_beat[global_beat].getTime());
@@ -285,6 +293,8 @@ void GameScene::update(float dt) {
     if (_input.isLogOn()){
         initHitLog();
     }
+
+    bool attempt_pickup = false;
     //CULog("press ready %d, output ready %d", _input.peekStartEvent().pressure, _input.peekEndEvent().pressure);
     if (_gameState == GameState::OUTPUT) {
         //CULog("recorded actions: %d %d %d %d", inputs_by_beat[0], inputs_by_beat[1], inputs_by_beat[2], inputs_by_beat[3]);
@@ -303,87 +313,157 @@ void GameScene::update(float dt) {
             case InputType::RIGHT_SWIPE:
                 _player->move(Direction::Right, _gridSize, _nRow, _nCol);
                 break;
+            case InputType::TAP:
+                if (_player->getCarried() != -1) {
+                    _valuables.set_val_dropped(_player->getCarried());
+                    _player->setCarrying(false, -1);
+                }
+                else {
+                    attempt_pickup = true;
+                }
+                inputs_by_beat[2] = InputType::NO_INPUT;
+                inputs_by_beat[3] = InputType::NO_INPUT;
+                break;
             default:
                 break;
+                /**
+                if (_input.didDrop() and _player->isCarrying()) {
+                    _valuables.set_val_dropped(_player->getCarried());
+                    _player->setCarrying(false, -1);
+                } */
             }
             inputs_by_beat[0] = InputType::NO_INPUT;
             inputs_by_beat[1] = InputType::NO_INPUT;
         }
 
     }
-    
-    /**
-    if (_step <= 0.2 * _interval || _step >= 0.8 * _interval) {
-        // Toggle mini-game overlay with M key
-        cugl::Keyboard* keys = cugl::Input::get<cugl::Keyboard>();
-        if (keys->keyPressed(cugl::KeyCode::M)) {
-            _showOverlay = !_showOverlay;
-            _inputStep = 0;
-            if (_overlay) _overlay->setVisible(_showOverlay);
-        }
-        if (_input.didDrop() and _player->isCarrying()) {
-            _valuables.set_val_dropped(_player->getCarried());
-            _player->setCarrying(false, -1);
 
+    if (_input.didToggleOverlay()) {
+        _showOverlay = !_showOverlay;
+        _inputStep = 0;
+        if (_overlay) _overlay->setVisible(_showOverlay);
+        _gameState = GameState::MBS;
+        attempt_pickup = true;
+    }
+    if (attempt_pickup || _gameState == GameState::MBS) {
+        if (_gameState != GameState::MBS && _collisions.hackyAttemptToPickUP(_player, _valuables)) {
+            _gameState = GameState::MBS;
+            _countDownMini = -1;
         }
-        if (_input.didPickUp() and _collisions.hackyAttemptToPickUP(_player, _valuables)) {
+        _inWindow = true;
+        if (_gameState == GameState::MBS) {
             if (_showOverlay == false) {
                 _showOverlay = true;
                 _overlay->setVisible(true);
             }
-        }
-        std::vector<cugl::Vec2> player_pos;
-        player_pos.push_back(_player->getPosition());
-        _valuables.update(getSize(), player_pos);
-
-        /**
-        if (_collisions.resolveCollisions(_player, _valuables)) {
-            std::cout<<"Collision between player and valuable"<<endl;
-            
-
-
-        if (_gameState == GameState::MBS) {
             if (_showOverlay) {
                 // Must enter Up, Left, Right, Down in order to dismiss
-                static const Direction sequence[] = {
+                /*static const Direction sequence[] = {
                     Direction::Up, Direction::Left, Direction::Right, Direction::Down
-                };
-                Direction dir = _input.getDirection();
-                if (dir != Direction::None) {
-                
-                    appendHitLog(dir);
-                    
-                    
-                    if (dir == sequence[_inputStep]) {
+                };*/
+                if (directionSequence.empty()) { // Random generate directions
+                    for (int i = 0; i < 4; i++) {
+                        int r = rand() % 4;
+                        Direction dir = static_cast<Direction>(r);
+                        directionSequence.push_back(dir);
+                        auto button = _overlay->getChild(i + 2);
+                        if (button && button->getChildren().size() > 0) {
+                            auto img = button->getChild(0);
+                            if (img) {
+                                float degree = 0.0f;
+                                switch (dir) {
+                                case Direction::Right: degree = -90; break;
+                                case Direction::Up:    degree = 0; break;
+                                case Direction::Left:  degree = 90; break;
+                                case Direction::Down:  degree = 180; break;
+                                }
+                                img->setAngle(degree * M_PI / 180.0f);
+                            }
+                        }
+                    }
+                }
+                //CULog("eval inputs");
+                GameScene::InputType active_input = inputs_by_beat[global_beat];
+                //CULog("inputs %d, %d, %d, %d", inputs_by_beat[0], inputs_by_beat[1], inputs_by_beat[2], inputs_by_beat[3]);
+                //CULog("input %d", active_input);
+                if (active_input != InputType::NO_INPUT && (_countDownMini >= 0 && _countDownMini < 4)) {
+                    CULog("ENTERED----------------");
+                    inputs_by_beat[global_beat] = InputType::NO_INPUT;
+                    Direction dir = Direction::None;
+                    if (active_input == InputType::UP_SWIPE) {
+                        dir = Direction::Up;
+                    }
+                    else if (active_input == InputType::DOWN_SWIPE) {
+                        dir = Direction::Down;
+                    }
+                    else if (active_input == InputType::LEFT_SWIPE) {
+                        dir = Direction::Left;
+                    }
+                    else if (active_input == InputType::RIGHT_SWIPE) {
+                        dir = Direction::Right;
+                    }
+                    appendHitLog(dir, _input.isLogOn());
+                    CULog("identified with %d", active_input);
+                    _inputOnBeat = true;
+                    if (dir == directionSequence[_inputStep]) {
+                        CULog("on beat");
                         _inputStep++;
                         if (_inputStep == 4) {
                             // Full sequence entered ¡ª dismiss overlay
                             _showOverlay = false;
                             _inputStep = 0;
                             if (_overlay) _overlay->setVisible(false);
+                            _countDownMini = 5;
+                            directionSequence.clear();
+                            _gameState = GameState::INPUT;
                         }
                     }
                     else {
-                        // Wrong input ¡ª reset sequence
+                        // Wrong input ¡ª fail the minigame
+                        CULog("in fail block");
                         _inputStep = 0;
+                        _showOverlay = false;
+                        _valuables.set_val_dropped(_player->getCarried());
+                        _player->setCarrying(false, -1);
+                        if (_overlay) _overlay->setVisible(false);
+                        _countDownMini = 5;
+                        directionSequence.clear();
+                        _gameState = GameState::INPUT;
                     }
                 }
             }
-            else {
-//                CULog("in update loop");
-                // the update loop
-                if (_input.getDirection() != Direction::None) {
-                    appendHitLog(_input.getDirection());
-                    _player->move(_input.getDirection(), _gridSize, _nRow, _nCol);
+        }
+        _countDownMini = 0;
+    }
+    else {
+        _inWindow = false;
+        if (_gameState == GameState::INPUT || _gameState == GameState::OUTPUT) {
+            if (!_inWindow && _wasInWindow) { // Exit an input window
+                if (!_inputOnBeat && _countDownMini == 0 && _showOverlay) {
+                    CULog("off beat");
+                    _inputStep = 0;
+                    _showOverlay = false;
+                    _valuables.set_val_dropped(_player->getCarried());
+                    _player->setCarrying(false, -1);
+                    if (_overlay) _overlay->setVisible(false);
+                    _countDownMini = 5;
+                    directionSequence.clear();
                 }
-                std::vector<cugl::Vec2> player_pos;
-                player_pos.push_back(_player->getPosition());
-                _valuables.update(getSize(), player_pos);
-
+                if (_showOverlay) { // Check again
+                    _countDownMini = max(_countDownMini - 1, 0);
+                    CULog("%d", _countDownMini);
+                }
+                
             }
         }
     }
-    */
+
+    std::vector<cugl::Vec2> player_pos;
+    player_pos.push_back(_player->getPosition());
+    _valuables.update(getSize(), player_pos);
+    if (_inWindow && !_wasInWindow) { // Enter a new input window
+        _inputOnBeat = false;
+    }
 }
 
 void GameScene::_gestureInputProcesserHelper() {
@@ -464,6 +544,7 @@ GameScene::InputType GameScene::_interpretActionHelper(TouchEvent first, TouchEv
             return displacment.y <= 0 ? GameScene::InputType::UP_SWIPE : GameScene::InputType::DOWN_SWIPE;
         }
     }
+    _wasInWindow = _inWindow;
 }
 
 /**
@@ -485,7 +566,7 @@ void GameScene::render() {
     _player->draw(_batch);
     _batch->setColor(Color4::BLACK);
     
-     
+
     _batch->end();
 
     Scene2::render();

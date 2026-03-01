@@ -113,6 +113,17 @@ protected:
     bool _showOverlay;
     /* Current progress through the unlock sequence (Up, Left, Right, Down) */
     int _inputStep;
+    /* Count down for mini game (4 beats before starting the game) */
+    int _countDownMini = 5;
+    /* Whether the player input something on the current input window for mini game */
+    bool _inputOnBeat = false;
+    /* Currently in the input window (used to track enter and exit of input window) */
+    bool _inWindow = false;
+    /* Was in the input window during last update (used to track enter and exit of input window) */
+    bool _wasInWindow = false;
+    /* Random generated sequence for mini game*/
+    std::vector<Direction> directionSequence;
+    
 
     enum class InputType {
         UP_SWIPE,

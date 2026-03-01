@@ -42,6 +42,7 @@ private:
     bool _didPickUp;
     bool _pressed = false;
     bool _logOn = false;
+    bool _toggleOverlay = false;
 
     
 
@@ -55,6 +56,9 @@ public:
     }
     bool didDrop() const {
         return _didDrop;
+    }
+    bool didToggleOverlay() const {
+        return _toggleOverlay;
     }
 
     bool queryInputReady() {

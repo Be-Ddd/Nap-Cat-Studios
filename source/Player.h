@@ -53,7 +53,7 @@ private:
     bool _isCarrying;
 
     /** the id of the thing being carried*/
-    int _carried_id;
+    int _carried_id = -1;
     
     /** Time elapsed in current movement step (seconds) */
     float _moveTime;

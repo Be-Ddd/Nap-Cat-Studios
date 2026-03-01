@@ -51,6 +51,7 @@ void InputController::readInput() {
     _didReset = false;
     _didDrop = false;
     _didPickUp = false;
+    _toggleOverlay = false  ;
 
 
     // Movement forward/backward
@@ -145,6 +146,9 @@ void InputController::readInput() {
     }
     if (key_board->keyPressed(log)) {
         _logOn = !_logOn;
+    }
+    if (key_board->keyPressed(KeyCode::M)) {
+        _toggleOverlay = true;
     }
 
 #endif
