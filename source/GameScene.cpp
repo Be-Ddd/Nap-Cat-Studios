@@ -383,6 +383,7 @@ void GameScene::update(float dt) {
                     directionSequence.clear();
                 }
                 if (_showOverlay) { // Check again
+                    if (_countDownMini == 1) AudioEngine::get()->play("bang", _bang, false, _bang->getVolume(), true);
                     _countDownMini = max(_countDownMini - 1, 0);
                     CULog("%d", _countDownMini);
                 }
