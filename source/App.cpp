@@ -74,9 +74,13 @@ void DemoApp::onStartup() {
     _batch  = SpriteBatch::alloc();
     auto cam = OrthographicCamera::alloc(getDisplaySize());
     
-    // Start-up basic input (DESKTOP ONLY)
+#ifdef CU_MOBILE
+    Input::activate<Touchscreen>();
+#else
     Input::activate<Mouse>();
+//    Input::get<Mouse>()->setPointerAwareness(Mouse::PointerAwareness::DRAG);
     Input::activate<Keyboard>();
+#endif
 
     _assets->attach<Texture>(TextureLoader::alloc()->getHook());
     _assets->attach<Sound>(SoundLoader::alloc()->getHook());
@@ -118,8 +122,13 @@ void DemoApp::onShutdown() {
     _batch = nullptr;
 
     // Shutdown input
+#ifdef CU_MOBILE
+    Input::deactivate<Touchscreen>();
+#else
+    Input::deactivate<Mouse>();
     Input::deactivate<Keyboard>();
     Input::deactivate<Mouse>();
+#endif
 
     AudioEngine::stop();
     Application::onShutdown();  // YOU MUST END with call to parent
