@@ -48,7 +48,12 @@ bool CollisionController::resolveCollisions(const std::shared_ptr<Player>& playe
     }
     return collision;
 }
-
+/**
+* NEED TO FIX LATER
+* 
+* right now it is a copy paste of the above code, just specificially for returning T/F on specifically player pickup
+* should be reintegrated and conencted to above
+*/
 bool CollisionController::hackyAttemptToPickUP(const std::shared_ptr<Player>& player, ValuableSet& vset, const std::shared_ptr<TileModel>& tiles) {
     bool collision = false;
     for (size_t i = 0; i < vset.current.size(); ++i) {

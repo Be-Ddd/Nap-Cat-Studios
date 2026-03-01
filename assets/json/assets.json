@@ -457,6 +457,14 @@
         "bgm": {
           "type": "sample",
           "file": "sounds/bgm.ogg"
+        },
+        "bgm2-2": {
+          "type": "sample",
+          "file": "sounds/bgm2-2.ogg"
+        },
+        "120bpm": {
+          "type": "sample",
+          "file": "sounds/120bpm.ogg"
         }
     },
     "jsons": {

@@ -16,6 +16,7 @@
 #ifndef __INPUT_CONTROLLER_H__
 #define __INPUT_CONTROLLER_H__
 #include "Direction.h"
+using namespace cugl;
 
 /**
  * Device-independent input manager.
@@ -28,19 +29,32 @@ class InputController {
 private:
     
     Direction _dir;
+
+    TouchEvent _start_touch_event;
+    TouchEvent _end_touch_event;
     
     bool _didPress;
     
 
     /** Did we press the reset button? */
     bool _didReset;
+
+    /** depreciated, see the action interpretation in gamescene as its no longer a single input */
     bool _didDrop;
+    /** depreciated, see the action interpretation in gamescene as its no longer a single input */
     bool _didPickUp;
+
+    /** depreciated, see the action interpretation in gamescene as its no longer a single input */
+    bool _pressed = false;
+
+    /** debug buttons */
     bool _logOn = false;
+    bool _toggleOverlay = false;
+
+    
 
 public:
-    
-    
+    /** depreciated see above buttons */
     Direction getDirection() const{
         return _dir;
     }
@@ -53,6 +67,47 @@ public:
     bool didPickUp() const {
         return _didPickUp;
     }
+
+    /** debug buttons */
+    bool didToggleOverlay() const {
+        return _toggleOverlay;
+    }
+    bool isLogOn() const {
+        return _logOn;
+    }
+
+    /** did the start and end touch event process properly and are ready to be read (.pressure == 1) */
+    bool queryInputReady() {
+        return _start_touch_event.pressure == 1 && _end_touch_event.pressure == 1;
+    }
+    /** is the start touch event processed properly and is ready to be read (.pressure == 1) */
+    bool queryStartEventReady(){
+        return _start_touch_event.pressure;
+    }
+    /** is the end touch event processed properly and is ready to be read (.pressure == 1) */
+    bool queryEndEventReady() {
+        return _end_touch_event.pressure;
+    }
+    /** return start touch event !!no guarentee event is ready, check with the query functions first) */
+    TouchEvent peekStartEvent() {
+        return _start_touch_event;
+    }
+    /** return end touch event !!no guarentee event is ready, check with the query functions first) */
+    TouchEvent peekEndEvent() {
+        return _end_touch_event;
+    }
+    /** returns a pair of start and end event (like the other peeks but together) !!no guarentee event is ready, check with the query functions first*/
+    std::pair<TouchEvent, TouchEvent> peekCompletedEvent () {
+        return std::pair(_start_touch_event, _end_touch_event);
+    }
+    /** dont typically call outside of input controller, clear both touch events and definitivly sets the pressue flag to 0 for undefined atm*/
+    void clearTouchEvents() {
+        _start_touch_event = TouchEvent();
+        _start_touch_event.pressure = 0;
+        _end_touch_event = TouchEvent();
+        _end_touch_event.pressure = 0;
+    }
+
     /**
      * Returns whether the reset button was pressed.
      *
@@ -62,9 +117,6 @@ public:
         return _didReset;
     }
     
-    bool isLogOn() const{
-        return _logOn;
-    }
 
     /**
      * Creates a new input controller with the default settings
